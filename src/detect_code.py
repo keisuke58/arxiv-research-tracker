@@ -28,7 +28,11 @@ def detect_code_links(
 
     with httpx.Client(timeout=10.0) as client:
         for paper in papers:
-            text = paper.get("abstract", "") + " " + paper.get("title", "")
+            text = " ".join([
+                paper.get("abstract", ""),
+                paper.get("title", ""),
+                paper.get("comment", ""),  # arXiv comment often has code links
+            ])
             code_info = _extract_github_url(text)
 
             if code_info and check_metadata and "owner" in code_info:

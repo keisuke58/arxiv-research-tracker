@@ -75,11 +75,16 @@ def fetch_papers_for_category(
         abstract = entry.findtext("atom:summary", namespaces=ATOM_NS) or ""
         abstract = " ".join(abstract.split())  # normalize whitespace
 
+        # arXiv comment field (often contains "code at github.com/...")
+        comment = entry.findtext("arxiv:comment", namespaces=ATOM_NS) or ""
+        comment = " ".join(comment.split())
+
         paper = {
             "arxiv_id": arxiv_id,
             "title": (entry.findtext("atom:title", namespaces=ATOM_NS) or "").strip().replace("\n", " "),
             "authors": authors,
             "abstract": abstract,
+            "comment": comment,
             "categories": categories,
             "primary_category": category,
             "published": published_str,

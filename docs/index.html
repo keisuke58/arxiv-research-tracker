@@ -9,45 +9,114 @@
       --bg: #0d1117; --surface: #161b22; --border: #30363d;
       --text: #c9d1d9; --text-muted: #8b949e; --accent: #58a6ff;
       --green: #3fb950; --orange: #d29922; --red: #f85149;
-      --tldr-bg: rgba(88,166,255,0.05);
+      --tldr-bg: rgba(88,166,255,0.05); --fav: #d29922;
     }
     [data-theme="light"] {
       --bg: #ffffff; --surface: #f6f8fa; --border: #d0d7de;
       --text: #1f2328; --text-muted: #656d76; --accent: #0969da;
       --green: #1a7f37; --orange: #9a6700; --red: #cf222e;
-      --tldr-bg: rgba(9,105,218,0.05);
+      --tldr-bg: rgba(9,105,218,0.05); --fav: #9a6700;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
       background: var(--bg); color: var(--text); line-height: 1.6;
-      max-width: 900px; margin: 0 auto; padding: 20px;
+      max-width: 960px; margin: 0 auto; padding: 20px;
       transition: background 0.3s, color 0.3s;
     }
-    h1 { color: var(--accent); margin-bottom: 8px; }
-    .header-row { display: flex; align-items: center; justify-content: space-between; }
-    .theme-toggle {
+    h1 { color: var(--accent); margin-bottom: 4px; font-size: 24px; }
+    .header-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .header-controls { display: flex; gap: 8px; align-items: center; }
+    .theme-toggle, .fav-toggle {
       background: var(--surface); border: 1px solid var(--border);
       color: var(--text); border-radius: 8px; padding: 6px 14px;
-      cursor: pointer; font-size: 14px; transition: all 0.3s;
+      cursor: pointer; font-size: 13px; transition: all 0.3s;
     }
-    .theme-toggle:hover { border-color: var(--accent); }
-    .stats { color: var(--text-muted); margin-bottom: 24px; font-size: 14px; }
-    h2 { color: var(--text); margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .theme-toggle:hover, .fav-toggle:hover { border-color: var(--accent); }
+    .fav-toggle.active { border-color: var(--fav); color: var(--fav); }
+    .stats { color: var(--text-muted); margin-bottom: 16px; font-size: 14px; }
+
+    /* Date archive */
+    .date-nav { margin-bottom: 16px; }
+    .date-nav summary {
+      cursor: pointer; color: var(--accent); font-size: 14px;
+      padding: 6px 0; user-select: none;
+    }
+    .date-list {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0;
+    }
+    .date-list a {
+      color: var(--text-muted); text-decoration: none; font-size: 12px;
+      padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .date-list a:hover { border-color: var(--accent); color: var(--accent); }
+    .date-list a.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* Profile tabs */
+    .profile-tabs {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .tab-btn {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text-muted); border-radius: 20px; padding: 5px 14px;
+      cursor: pointer; font-size: 13px; transition: all 0.2s;
+    }
+    .tab-btn:hover { border-color: var(--accent); color: var(--text); }
+    .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* Filters */
+    .filter-bar {
+      margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+    }
+    .filter-bar input, .filter-bar select {
+      padding: 7px 12px; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text); font-size: 13px; transition: all 0.3s;
+    }
+    .filter-bar input { flex: 1; min-width: 180px; }
+    .filter-bar select { min-width: 140px; }
+    .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: var(--accent); }
+    .score-filter { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--text-muted); }
+    .score-filter input[type="range"] { width: 80px; }
+
+    /* Section */
+    h2 { color: var(--text); margin: 20px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; font-size: 18px; }
     .badge {
       background: var(--accent); color: #fff; border-radius: 12px;
       padding: 2px 10px; font-size: 13px; font-weight: 600;
     }
     [data-theme="light"] .badge { color: #fff; }
+
+    /* Paper card */
     .paper-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 8px; padding: 16px; margin-bottom: 12px;
+      border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
       transition: background 0.3s, border-color 0.3s;
+      position: relative;
     }
     .paper-card:hover { border-color: var(--accent); }
-    .paper-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .paper-card.read { opacity: 0.6; }
+    .paper-card.read:hover { opacity: 1; }
+    .paper-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; padding-right: 60px; }
     .paper-title a { color: var(--accent); text-decoration: none; }
     .paper-title a:hover { text-decoration: underline; }
+
+    /* Card actions (fav + read) */
+    .card-actions {
+      position: absolute; top: 12px; right: 12px;
+      display: flex; gap: 6px;
+    }
+    .card-actions button {
+      background: none; border: none; cursor: pointer;
+      font-size: 16px; opacity: 0.4; transition: opacity 0.2s;
+      padding: 2px;
+    }
+    .card-actions button:hover { opacity: 0.8; }
+    .card-actions button.active { opacity: 1; }
+    .btn-fav.active { color: var(--fav); }
+    .btn-read.active { color: var(--green); }
+
     .score {
       display: inline-block; padding: 2px 8px; border-radius: 4px;
       font-size: 12px; font-weight: 700; margin-left: 8px; color: #fff;
@@ -55,48 +124,117 @@
     .score-high { background: var(--green); }
     .score-mid { background: var(--orange); }
     .score-low { background: var(--text-muted); }
-    .meta { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
-    .tldr { font-style: italic; margin: 8px 0; padding: 8px 12px;
-             border-left: 3px solid var(--accent); background: var(--tldr-bg); }
-    .reason { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
-    .links { margin-top: 8px; font-size: 13px; }
+    .meta { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+
+    /* Abstract */
+    .abstract-toggle {
+      background: none; border: none; color: var(--accent);
+      cursor: pointer; font-size: 12px; padding: 0; margin-top: 4px;
+    }
+    .abstract-toggle:hover { text-decoration: underline; }
+    .abstract-content {
+      display: none; margin-top: 6px; padding: 10px 12px;
+      background: var(--bg); border-radius: 6px; font-size: 13px;
+      line-height: 1.5; color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .abstract-content.show { display: block; }
+
+    .tldr { font-style: italic; margin: 6px 0; padding: 8px 12px;
+             border-left: 3px solid var(--accent); background: var(--tldr-bg); font-size: 13px; }
+    .reason { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .links { margin-top: 6px; font-size: 13px; }
     .links a { color: var(--accent); margin-right: 12px; text-decoration: none; }
     .links a:hover { text-decoration: underline; }
     .code-badge {
       display: inline-block; background: var(--green); color: #fff;
       padding: 1px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;
     }
-    .filter-bar {
-      margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap;
+
+    /* Counter */
+    .visible-count {
+      color: var(--text-muted); font-size: 13px; margin-bottom: 12px;
     }
-    .filter-bar input {
-      flex: 1; min-width: 200px; padding: 8px 12px; border-radius: 6px;
-      border: 1px solid var(--border); background: var(--surface);
-      color: var(--text); font-size: 14px; transition: all 0.3s;
-    }
-    .filter-bar input:focus { outline: none; border-color: var(--accent); }
+
     @media (max-width: 600px) {
       body { padding: 12px; }
       .paper-card { padding: 12px; }
+      .filter-bar { flex-direction: column; }
+      .profile-tabs { gap: 4px; }
+      .tab-btn { padding: 4px 10px; font-size: 12px; }
     }
   </style>
 </head>
 <body>
   <div class="header-row">
     <h1>arXiv Digest</h1>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+    <div class="header-controls">
+      <button class="fav-toggle" onclick="toggleFavFilter()" id="favBtn" title="Show favorites only">Favorites</button>
+      <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+    </div>
   </div>
-  <p class="stats">2026-03-14 &middot; 21 relevant / 253 total papers</p>
+  <p class="stats">2026-03-14 &middot; 21 relevant / 251 total papers</p>
+  
+  <details class="date-nav">
+    <summary>Date Archive (1 digests)</summary>
+    <div class="date-list">
+      <a href="archive/2026-03-14.html" class="active">2026-03-14</a>
+    </div>
+  </details>
+
+  <div class="profile-tabs">
+    <button class="tab-btn active" onclick="filterProfile('all', this)">All</button>
+      <button class="tab-btn" onclick="filterProfile('Computational Mechanics &amp; UQ', this)">Computational Mechanics &amp; UQ</button>
+      <button class="tab-btn" onclick="filterProfile('Numerical Methods &amp; VEM', this)">Numerical Methods &amp; VEM</button>
+      <button class="tab-btn" onclick="filterProfile('Biofilm &amp; Microbial Modeling', this)">Biofilm &amp; Microbial Modeling</button>
+      <button class="tab-btn" onclick="filterProfile('Machine Learning &amp; AI', this)">Machine Learning &amp; AI</button>
+      <button class="tab-btn" onclick="filterProfile('Computer Vision &amp; Multimodal', this)">Computer Vision &amp; Multimodal</button>
+      <button class="tab-btn" onclick="filterProfile('NLP &amp; Language Models', this)">NLP &amp; Language Models</button>
+
+  </div>
 
   <div class="filter-bar">
-    <input type="text" id="search" placeholder="Filter papers..." oninput="filterPapers()">
+    <input type="text" id="search" placeholder="Filter by title, author, keyword..." oninput="applyFilters()">
+    <select id="catFilter" onchange="applyFilters()">
+      <option value="all">All Categories</option>
+        <option value="cond-mat.stat-mech">cond-mat.stat-mech</option>
+        <option value="cs.AI">cs.AI</option>
+        <option value="cs.CL">cs.CL</option>
+        <option value="cs.CV">cs.CV</option>
+        <option value="cs.DC">cs.DC</option>
+        <option value="cs.GT">cs.GT</option>
+        <option value="cs.LG">cs.LG</option>
+        <option value="cs.MA">cs.MA</option>
+        <option value="math.DS">math.DS</option>
+        <option value="math.NA">math.NA</option>
+        <option value="math.ST">math.ST</option>
+        <option value="physics.bio-ph">physics.bio-ph</option>
+        <option value="physics.comp-ph">physics.comp-ph</option>
+        <option value="physics.plasm-ph">physics.plasm-ph</option>
+        <option value="q-bio.PE">q-bio.PE</option>
+        <option value="stat.AP">stat.AP</option>
+        <option value="stat.CO">stat.CO</option>
+        <option value="stat.ME">stat.ME</option>
+        <option value="stat.ML">stat.ML</option>
+
+    </select>
+    <div class="score-filter">
+      Score &ge; <span id="scoreVal">6</span>
+      <input type="range" id="scoreFilter" min="1" max="10" value="6" oninput="document.getElementById('scoreVal').textContent=this.value; applyFilters()">
+    </div>
   </div>
 
+  <div class="visible-count" id="visibleCount"></div>
+
   
-    <section class="profile-section">
+    <section class="profile-section" data-profile="Computational Mechanics &amp; UQ">
       <h2>Computational Mechanics &amp; UQ <span class="badge">5</span></h2>
       
-    <div class="paper-card" data-score="10">
+    <div class="paper-card" data-score="10" data-categories="stat.ML, cs.LG, stat.ME" data-paper-id="2603.11965v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11965v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11965v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11965v1">Uncovering Locally Low-dimensional Structure in Networks by Locally Optimal Spectral Embedding</a>
         <span class="score score-high">10/10</span>
@@ -104,13 +242,20 @@
       <div class="meta">Hannah Sansford, Nick Whiteley, Patrick Rubin-Delanchy &middot; stat.ML, cs.LG, stat.ME</div>
       
       <div class="reason">Why: Keyword matches: spectral, networks, finite</div>
+      
+      <button class="abstract-toggle" id="abs-btn-0" onclick="toggleAbstract(0)">Show abstract</button>
+      <div class="abstract-content" id="abs-0">Standard Adjacency Spectral Embedding (ASE) relies on a global low-rank assumption often incompatible with the sparse, transitive structure of real-world networks, causing local geometric features to be &#39;smeared&#39;. To address this, we introduce Local Adjacency Spectral Embedding (LASE), which uncovers locally low-dimensional structure via weighted spectral decomposition. Under a latent position model with a kernel feature map, we treat the image of latent positions as a locally low-dimensional set in infinite-dimensional feature space. We establish finite-sample bounds quantifying the trade-off between the statistical cost of localisation and the reduced truncation error achieved by targeting a locally low-dimensional region of the embedding. Furthermore, we prove that sufficient localisation induces rapid spectral decay and the emergence of a distinct spectral gap, theoretically justifying low-dimensional local embeddings. Experiments on synthetic and real networks show that LASE improves local reconstruction and visualisation over global and subgraph baselines, and we introduce UMAP-LASE for assembling overlapping local embeddings into high-fidelity global visualisations.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11965v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11965v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="8">
+    <div class="paper-card" data-score="8" data-categories="physics.plasm-ph, physics.comp-ph" data-paper-id="2603.11699v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11699v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11699v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11699v1">Stochastic single-stage stellarator optimization using fixed-boundary equilibria</a>
         <span class="score score-high">8/10</span>
@@ -118,13 +263,20 @@
       <div class="meta">Pedro F. Gil, Jason Smoniewski, Rogerio Jorge, Paul Huslage, Eve V. Stenson &middot; physics.plasm-ph, physics.comp-ph</div>
       
       <div class="reason">Why: Keyword matches: stochastic, boundary, methods</div>
+      
+      <button class="abstract-toggle" id="abs-btn-1" onclick="toggleAbstract(1)">Show abstract</button>
+      <div class="abstract-content" id="abs-1">In this paper, single-stage stellarator optimization is combined with stochastic coil optimization to improve the robustness of the stellarator as compared to deterministic methods. The plasma boundary, solved with an MHD solver in fixed-boundary mode, is linked to a set of randomly perturbed coils via the squared flux. The optimizer avoids sharp local minima and can reach improved configurations. Two different configurations obtained with our method, one quasi-axisymmetric and one quasi-helically symmetric, are compared against both the standard stochastic stage II method and the single-stage method. The new configurations shown here yield improved squared flux, quasisymmetry, and particle loss following a posteriori perturbation of the coils.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11699v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11699v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="8">
+    <div class="paper-card" data-score="8" data-categories="stat.ME" data-paper-id="2603.11719v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11719v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11719v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11719v1">Cross-Validation in Bipartite Networks</a>
         <span class="score score-high">8/10</span>
@@ -132,13 +284,20 @@
       <div class="meta">Bokai Yang, Yuanxing Chen, Yuhong Yang &middot; stat.ME</div>
       
       <div class="reason">Why: Keyword matches: stochastic, networks, methods, models</div>
+      
+      <button class="abstract-toggle" id="abs-btn-2" onclick="toggleAbstract(2)">Show abstract</button>
+      <div class="abstract-content" id="abs-2">Although network data have become increasingly popular and widely studied, the vast majority of statistical literature has focused on unipartite networks, leaving relatively few theoretical results for bipartite networks. In this paper, we study the model selection problem for bipartite stochastic block models. We propose a penalized cross-validation approach that incorporates appropriate penalty terms for different candidate models, addressing the new and challenging issue that underfitting may occur on one side while overfitting occurs on the other. To the best of our knowledge, our method provides the first consistency guarantee for model selection in bipartite networks. Through simulations under various scenarios and analysis of two real datasets, we demonstrate that our approach not only outperforms traditional modularity-based and projection-based methods, but also naturally preserves potential asymmetry between the two node sets.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11719v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11719v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="6">
+    <div class="paper-card" data-score="6" data-categories="stat.AP, math.ST, stat.CO, stat.ME" data-paper-id="2603.11685v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11685v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11685v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11685v1">On the Unit Teissier Distribution: Properties, Estimation Procedures and Applications</a>
         <span class="score score-mid">6/10</span>
@@ -146,13 +305,20 @@
       <div class="meta">Zuber Akhter, Mohamed A. Abdelaziz, M. Z. Anis, Ahmed Z. Afify &middot; stat.AP, math.ST, stat.CO, stat.ME</div>
       
       <div class="reason">Why: Keyword matches: simulation, bayesian, methods</div>
+      
+      <button class="abstract-toggle" id="abs-btn-3" onclick="toggleAbstract(3)">Show abstract</button>
+      <div class="abstract-content" id="abs-3">The Teissier distribution, originally proposed by Teissier [31], was designed to model mortality due to aging in domestic animals. More recently, Krishna et al. [19] introduced the Unit Teissier (UT) distribution on the interval (0, 1) through the transformation $X=e^{-Y}$, where $Y$ follows the Teissier distribution. In their work, the authors derived several fundamental properties of the UT distribution and investigated parameter estimation using maximum likelihood, least squares, weighted least squares and Bayesian methods. Building upon this work, the present paper develops additional theoretical and inferential results for the UT distribution. In particular, closed-form expressions for single moments of order statistics and L-moments are obtained, and characterization results based on truncated moments are established. Furthermore, several alternative parameter estimation methods are considered, including maximum product of spacings, Cramér-von Mises, Anderson-Darling, right-tail Anderson-Darling, percentile and L-moment estimation, while the estimation methods previously studied by Krishna et al. [19] are also included for comparison. Extensive simulation studies under various parameter settings and sample sizes are conducted to assess and compare the performance of the estimators. Finally, the flexibility and practical utility of the UT distribution are demonstrated using a real dataset.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11685v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11685v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="6">
+    <div class="paper-card" data-score="6" data-categories="stat.ME" data-paper-id="2603.11761v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11761v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11761v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11761v1">Causal Influence Maximization with Steady-State Guarantees</a>
         <span class="score score-mid">6/10</span>
@@ -160,6 +326,9 @@
       <div class="meta">Renjie Cao, Zhuoxin Yan, Xinyan Su, Zhiheng Zhang &middot; stat.ME</div>
       
       <div class="reason">Why: Keyword matches: structural, inference, networks</div>
+      
+      <button class="abstract-toggle" id="abs-btn-4" onclick="toggleAbstract(4)">Show abstract</button>
+      <div class="abstract-content" id="abs-4">Influence maximization in networks is a central problem in machine learning and causal inference, where an intervention on a subset of individuals triggers a diffusion process through the network. Existing approaches typically optimize short-horizon rewards or rely on strong parametric assumptions, offering limited guarantees for longrun causal outcomes. In this work, we address the problem of selecting a seed set to maximize the total steady-state potential outcome under budget constraints. Theoretically, we demonstrate that under a low-probability propagation assumption, the high-dimensional path-dependent dynamics can be compressed into a low-dimensional exposure mapping with a bounded second-order approximation error. Leveraging this structural reduction, we propose CIM, a two-stage framework that first learns shape-constrained exposureresponse functions from observational data and then optimizes the objective via a greedy strategy. Our approach bridges causal inference with network optimization, providing provable guarantees for both the estimation of outcome functions and the approximation ratio of the influence maximization.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11761v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11761v1">Abstract</a>
@@ -167,10 +336,14 @@
       </div>
     </div>
     </section>
-    <section class="profile-section">
+    <section class="profile-section" data-profile="Numerical Methods &amp; VEM">
       <h2>Numerical Methods &amp; VEM <span class="badge">2</span></h2>
       
-    <div class="paper-card" data-score="10">
+    <div class="paper-card" data-score="10" data-categories="math.NA" data-paper-id="2603.11668v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11668v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11668v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11668v1">Compact LABFM: a framework for meshless methods with spectral-like resolving power</a>
         <span class="score score-high">10/10</span>
@@ -178,20 +351,30 @@
       <div class="meta">Henry M. Broadley, Steven J. Lind, Jack R. C. King &middot; math.NA</div>
       
       <div class="reason">Why: Keyword matches: finite differences, meshless methods, differences, arbitrary, meshless</div>
+      
+      <button class="abstract-toggle" id="abs-btn-5" onclick="toggleAbstract(5)">Show abstract</button>
+      <div class="abstract-content" id="abs-5">Meshless methods are often used in numerical simulations of systems of partial differential equations (PDEs), particularly those which involve complex geometries or free surfaces. Here we present a novel compact scheme based on the local anisotropic basis function method (LABFM), a meshless method which provides approximations to spatial operators to arbitrary polynomial consistency. Our approach mimics compact finite-differences by using implicit stencils to optimise the resolving power of each operator, whilst retaining diagonal dominance of the resulting global sparse linear system. The new method is demonstrated to provide improved approximations by a series of convergence tests and resolving power analysis, before solutions to canonical PDEs are computed. Significant gains in accuracy are observed, in particular for solutions containing high wavenumber components. Our compact meshfree method provides a pathway to high-order simulations of PDEs in complex geometries with spectral-like resolving power, and has the potential to lead to a step-change in the accuracy of numerical solutions to such problems.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11668v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11668v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="6">
+    <div class="paper-card" data-score="6" data-categories="math.NA" data-paper-id="2603.11696v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11696v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11696v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11696v1">Non-uniform $α$-Robust Alikhanov Mixed FEM with Optimal Convergence for the Time-Fractional Allen--Cahn Equation</a>
         <span class="score score-mid">6/10</span>
       </div>
       <div class="meta">Abhinav Jha, Samir Karaa, Aditi Tomar &middot; math.NA</div>
       
-      <div class="reason">Why: Keyword matches: discretization, polyhedral, element, finite, mixed</div>
+      <div class="reason">Why: Keyword matches: discretization, polyhedral, element, finite, error</div>
+      
+      <button class="abstract-toggle" id="abs-btn-6" onclick="toggleAbstract(6)">Show abstract</button>
+      <div class="abstract-content" id="abs-6">We investigate a mixed finite element method for the spatial discretization of a time-fractional Allen--Cahn equation defined on a convex polyhedral domain, combined with a nonuniform Alikhanov scheme for the temporal approximation. Under suitable regularity assumptions on the initial data that are weaker than those typically imposed in the literature, we establish regularity results for the solution and its flux. We then derive optimal $L^2$-error estimates, up to a logarithmic factor, for both the solution and the flux. The estimates are robust with respect to the fractional order $α$, in the sense that the associated constants remain bounded as $α\to 1^{-}$. Numerical experiments are presented to confirm the theoretical findings.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11696v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11696v1">Abstract</a>
@@ -199,10 +382,14 @@
       </div>
     </div>
     </section>
-    <section class="profile-section">
+    <section class="profile-section" data-profile="Biofilm &amp; Microbial Modeling">
       <h2>Biofilm &amp; Microbial Modeling <span class="badge">2</span></h2>
       
-    <div class="paper-card" data-score="10">
+    <div class="paper-card" data-score="10" data-categories="cond-mat.stat-mech, physics.bio-ph" data-paper-id="2603.12184v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12184v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12184v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12184v1">Non-Markovian Entropy Dynamics in Living Systems from the Keldysh Formalism</a>
         <span class="score score-high">10/10</span>
@@ -210,13 +397,20 @@
       <div class="meta">Feiyi Liu, Min Guo, Hongwei Tan, Yang Wang &middot; cond-mat.stat-mech, physics.bio-ph</div>
       
       <div class="reason">Why: Keyword matches: biological, dynamics, systems, and</div>
+      
+      <button class="abstract-toggle" id="abs-btn-7" onclick="toggleAbstract(7)">Show abstract</button>
+      <div class="abstract-content" id="abs-7">Living systems are open nonequilibrium systems that continuously exchange energy, matter, and information with their environments, leading to stochastic dynamics with memory and active fluctuations. In this study, we develop a non-Markovian theoretical framework for the entropy dynamics of living systems based on the Keldysh functional formalism and stochastic thermodynamics. The approach naturally incorporates colored environmental noise, memory-dependent dissipation, and many-body interactions, yielding generalized Langevin dynamics and non-Markovian master equations. Within this framework we derive an exact frequency-domain expression for the entropy production rate and show that violations of the fluctuation-dissipation relation provide a direct thermodynamic signature of active biological fluctuations. We further demonstrate that environmental memory enhances low-frequency fluctuations and entropy production, leading to critical slowing down near dynamical instability. These results provide a microscopic physical foundation for the entropy &quot;bathtub&quot; picture of living systems and connect entropy evolution with development, aging, and death in nonequilibrium dynamics.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12184v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12184v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="8">
+    <div class="paper-card" data-score="8" data-categories="cs.GT, math.DS, q-bio.PE" data-paper-id="2603.12107v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12107v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12107v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12107v1">Social Distancing Equilibria in Games under Conventional SI Dynamics</a>
         <span class="score score-high">8/10</span>
@@ -224,6 +418,9 @@
       <div class="meta">Connor D Olson, Timothy C Reluga &middot; cs.GT, math.DS, q-bio.PE</div>
       
       <div class="reason">Why: Keyword matches: dynamics, analysis, disease, theory, game</div>
+      
+      <button class="abstract-toggle" id="abs-btn-8" onclick="toggleAbstract(8)">Show abstract</button>
+      <div class="abstract-content" id="abs-8">The mathematical characterization of social-distancing games in classical epidemic theory remains an important question, for their applications to both infectious-disease theory and memetic theory. We consider a special case of the dynamic finite-duration SI social-distancing game where payoffs are accounted using Markov decision theory with zero-discounting, while distancing is constrained by threshold-linear running-costs, and the running-cost of perfect-distancing is finite. In this special case, we are able construct strategic equilibria satisfying the Nash best-response condition explicitly by integration. Our constructions are obtained using a new change of variables which simplifies the geometry and analysis.As it turns out, there are no singular solutions, and a time-dependent bang-bang strategy consisting of a wait-and-see phase followed by a lock-down phase is always the unique strategic equilibrium. We also show that in a restricted strategy space the bang-bang Nash equilibrium is an ESS, and that the optimal public policy exactly corresponds with the equilibrium strategy.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12107v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12107v1">Abstract</a>
@@ -231,52 +428,77 @@
       </div>
     </div>
     </section>
-    <section class="profile-section">
+    <section class="profile-section" data-profile="Machine Learning &amp; AI">
       <h2>Machine Learning &amp; AI <span class="badge">8</span></h2>
       
-    <div class="paper-card" data-score="10">
+    <div class="paper-card" data-score="10" data-categories="cs.AI" data-paper-id="2603.11691v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11691v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11691v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11691v1">STAIRS-Former: Spatio-Temporal Attention with Interleaved Recursive Structure Transformer for Offline Multi-task Multi-agent Reinforcement Learning</a>
         <span class="score score-high">10/10</span>
       </div>
       <div class="meta">Jiwon Jeon, Myungsik Cho, Youngchul Sung &middot; cs.AI</div>
       
-      <div class="reason">Why: Keyword matches: reinforcement learning, reinforcement, architecture, multi agent, transformer</div>
+      <div class="reason">Why: Keyword matches: reinforcement learning, reinforcement, architecture, transformer, multi agent</div>
+      
+      <button class="abstract-toggle" id="abs-btn-9" onclick="toggleAbstract(9)">Show abstract</button>
+      <div class="abstract-content" id="abs-9">Offline multi-agent reinforcement learning (MARL) with multi-task datasets is challenging due to varying numbers of agents across tasks and the need to generalize to unseen scenarios. Prior works employ transformers with observation tokenization and hierarchical skill learning to address these issues. However, they underutilize the transformer attention mechanism for inter-agent coordination and rely on a single history token, which limits their ability to capture long-horizon temporal dependencies in partially observable MARL settings. In this paper, we propose STAIRS-Former, a transformer architecture augmented with spatial and temporal hierarchies that enables effective attention over critical tokens while capturing long interaction histories. We further introduce token dropout to enhance robustness and generalization across varying agent populations. Extensive experiments on diverse multi-agent benchmarks, including SMAC, SMAC-v2, MPE, and MaMuJoCo, with multi-task datasets demonstrate that STAIRS-Former consistently outperforms prior methods and achieves new state-of-the-art performance.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11691v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11691v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="9">
+    <div class="paper-card" data-score="9" data-categories="cs.LG, cs.AI" data-paper-id="2603.12244v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12244v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12244v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12244v1">Separable neural architectures as a primitive for unified predictive and generative intelligence</a>
         <span class="score score-high">9/10</span>
       </div>
       <div class="meta">Reza T. Batley, Apurba Sarker, Rajib Mostakim, Andrew Klichine, Sourav Saha &middot; cs.LG, cs.AI</div>
       
-      <div class="reason">Why: Keyword matches: reinforcement learning, neural architecture, architectures, reinforcement, architecture</div>
+      <div class="reason">Why: Keyword matches: reinforcement learning, neural architecture, reinforcement, architectures, architecture</div>
+      
+      <button class="abstract-toggle" id="abs-btn-10" onclick="toggleAbstract(10)">Show abstract</button>
+      <div class="abstract-content" id="abs-10">Intelligent systems across physics, language and perception often exhibit factorisable structure, yet are typically modelled by monolithic neural architectures that do not explicitly exploit this structure. The separable neural architecture (SNA) addresses this by formalising a representational class that unifies additive, quadratic and tensor-decomposed neural models. By constraining interaction order and tensor rank, SNAs impose a structural inductive bias that factorises high-dimensional mappings into low-arity components. Separability need not be a property of the system itself: it often emerges in the coordinates or representations through which the system is expressed. Crucially, this coordinate-aware formulation reveals a structural analogy between chaotic spatiotemporal dynamics and linguistic autoregression. By treating continuous physical states as smooth, separable embeddings, SNAs enable distributional modelling of chaotic systems. This approach mitigates the nonphysical drift characteristics of deterministic operators whilst remaining applicable to discrete sequences. The compositional versatility of this approach is demonstrated across four domains: autonomous waypoint navigation via reinforcement learning, inverse generation of multifunctional microstructures, distributional modelling of turbulent flow and neural language modelling. These results establish the separable neural architecture as a domain-agnostic primitive for predictive and generative intelligence, capable of unifying both deterministic and distributional representations.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12244v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12244v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="9">
+    <div class="paper-card" data-score="9" data-categories="cs.DC, cs.LG, cs.MA" data-paper-id="2603.12031v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12031v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12031v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12031v1">AGMARL-DKS: An Adaptive Graph-Enhanced Multi-Agent Reinforcement Learning for Dynamic Kubernetes Scheduling</a>
         <span class="score score-high">9/10</span>
       </div>
       <div class="meta">Hamed Hamzeh &middot; cs.DC, cs.LG, cs.MA</div>
       
-      <div class="reason">Why: Keyword matches: reinforcement learning, reinforcement, graph neural, learning for, multi agent</div>
+      <div class="reason">Why: Keyword matches: reinforcement learning, reinforcement, learning for, graph neural, multi agent</div>
+      
+      <button class="abstract-toggle" id="abs-btn-11" onclick="toggleAbstract(11)">Show abstract</button>
+      <div class="abstract-content" id="abs-11">State-of-the-art cloud-native applications require intelligent schedulers that can effectively balance system stability, resource utilisation, and associated costs. While Kubernetes provides feasibility-based placement by default, recent research efforts have explored the use of reinforcement learning (RL) for more intelligent scheduling decisions. However, current RL-based schedulers have three major limitations. First, most of these schedulers use monolithic centralised agents, which are non-scalable for large heterogeneous clusters. Second, the ones that use multi-objective reward functions assume simple, static, linear combinations of the objectives. Third, no previous work has produced a stress-aware scheduler that can react adaptively to dynamic conditions. To address these gaps in current research, we propose the Adaptive Graph-enhanced Multi-Agent Reinforcement Learning Dynamic Kubernetes Scheduler (AGMARL-DKS). AGMARL-DKS addresses these gaps by introducing three major innovations. First, we construct a scalable solution by treating the scheduling challenge as a cooperative multi-agent problem, where every cluster node operates as an agent, employing centralised training methods before decentralised execution. Second, to be context-aware and yet decentralised, we use a Graph Neural Network (GNN) to build a state representation of the global cluster context at each agent. This represents an improvement over methods that rely solely on local observations. Finally, to make trade-offs between these objectives, we use a stress-aware lexicographical ordering policy instead of a simple, static linear weighting of these objectives. The evaluations in Google Kubernetes Engine (GKE) reveal that AGMARL-DKS significantly outperforms the default scheduler in terms of fault tolerance, utilisation, and cost, especially in scheduling batch and mission-critical workloads.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12031v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12031v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="8">
+    <div class="paper-card" data-score="8" data-categories="cs.LG, cs.AI" data-paper-id="2603.12091v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12091v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12091v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12091v1">Resource-Efficient Iterative LLM-Based NAS with Feedback Memory</a>
         <span class="score score-high">8/10</span>
@@ -284,41 +506,62 @@
       <div class="meta">Xiaojie Gu, Dmitry Ignatov, Radu Timofte &middot; cs.LG, cs.AI</div>
       
       <div class="reason">Why: Keyword matches: neural architecture, architecture search, language models, large language, architectures</div>
+      
+      <button class="abstract-toggle" id="abs-btn-12" onclick="toggleAbstract(12)">Show abstract</button>
+      <div class="abstract-content" id="abs-12">Neural Architecture Search (NAS) automates network design, but conventional methods demand substantial computational resources. We propose a closed-loop pipeline leveraging large language models (LLMs) to iteratively generate, evaluate, and refine convolutional neural network architectures for image classification on a single consumer-grade GPU without LLM fine-tuning. Central to our approach is a historical feedback memory inspired by Markov chains: a sliding window of $K{=}5$ recent improvement attempts keeps context size constant while providing sufficient signal for iterative learning. Unlike prior LLM optimizers that discard failure trajectories, each history entry is a structured diagnostic triple -- recording the identified problem, suggested modification, and resulting outcome -- treating code execution failures as first-class learning signals. A dual-LLM specialization reduces per-call cognitive load: a Code Generator produces executable PyTorch architectures while a Prompt Improver handles diagnostic reasoning. Since both the LLM and architecture training share limited VRAM, the search implicitly favors compact, hardware-efficient models suited to edge deployment. We evaluate three frozen instruction-tuned LLMs (${\leq}7$B parameters) across up to 2000 iterations in an unconstrained open code space, using one-epoch proxy accuracy on CIFAR-10, CIFAR-100, and ImageNette as a fast ranking signal. On CIFAR-10, DeepSeek-Coder-6.7B improves from 28.2% to 69.2%, Qwen2.5-7B from 50.0% to 71.5%, and GLM-5 from 43.2% to 62.0%. A full 2000-iteration search completes in ${\approx}18$ GPU hours on a single RTX~4090, establishing a low-budget, reproducible, and hardware-aware paradigm for LLM-driven NAS without cloud infrastructure.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12091v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12091v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="7">
+    <div class="paper-card" data-score="7" data-categories="cs.LG, cs.AI, math.ST, stat.ML" data-paper-id="2603.12060v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12060v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12060v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12060v1">Chemical Reaction Networks Learn Better than Spiking Neural Networks</a>
         <span class="score score-mid">7/10</span>
       </div>
       <div class="meta">Sophie Jaffard, Ivo F. Sbalzarini &middot; cs.LG, cs.AI, math.ST, stat.ML</div>
       
-      <div class="reason">Why: Keyword matches: machine learning, neural networks, efficient, learning, networks</div>
+      <div class="reason">Why: Keyword matches: machine learning, neural networks, efficient, networks, learning</div>
+      
+      <button class="abstract-toggle" id="abs-btn-13" onclick="toggleAbstract(13)">Show abstract</button>
+      <div class="abstract-content" id="abs-13">We mathematically prove that chemical reaction networks without hidden layers can solve tasks for which spiking neural networks require hidden layers. Our proof uses the deterministic mass-action kinetics formulation of chemical reaction networks. Specifically, we prove that a certain reaction network without hidden layers can learn a classification task previously proved to be achievable by a spiking neural network with hidden layers. We provide analytical regret bounds for the global behavior of the network and analyze its asymptotic behavior and Vapnik-Chervonenkis dimension. In a numerical experiment, we confirm the learning capacity of the proposed chemical reaction network for classifying handwritten digits in pixel images, and we show that it solves the task more accurately and efficiently than a spiking neural network with hidden layers. This provides a motivation for machine learning in chemical computers and a mathematical explanation for how biological cells might exhibit more efficient learning behavior within biochemical reaction networks than neuronal networks.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12060v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12060v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="7">
+    <div class="paper-card" data-score="7" data-categories="cs.LG, cs.AI" data-paper-id="2603.12015v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12015v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12015v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12015v1">Flowcean - Model Learning for Cyber-Physical Systems</a>
         <span class="score score-mid">7/10</span>
       </div>
       <div class="meta">Maximilian Schmidt, Swantje Plambeck, Markus Knitt, Hendrik Rose, Goerschwin Fey et al. &middot; cs.LG, cs.AI</div>
       
-      <div class="reason">Why: Keyword matches: machine learning, architecture, learning for, efficient, learning</div>
+      <div class="reason">Why: Keyword matches: machine learning, learning for, architecture, efficient, learning</div>
+      
+      <button class="abstract-toggle" id="abs-btn-14" onclick="toggleAbstract(14)">Show abstract</button>
+      <div class="abstract-content" id="abs-14">Effective models of Cyber-Physical Systems (CPS) are crucial for their design and operation. Constructing such models is difficult and time-consuming due to the inherent complexity of CPS. As a result, data-driven model generation using machine learning methods is gaining popularity. In this paper, we present Flowcean, a novel framework designed to automate the generation of models through data-driven learning that focuses on modularity and usability. By offering various learning strategies, data processing methods, and evaluation metrics, our framework provides a comprehensive solution, tailored to CPS scenarios. Flowcean facilitates the integration of diverse learning libraries and tools within a modular and flexible architecture, ensuring adaptability to a wide range of modeling tasks. This streamlines the process of model generation and evaluation, making it more efficient and accessible.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12015v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12015v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="7">
+    <div class="paper-card" data-score="7" data-categories="cs.AI" data-paper-id="2603.12096v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12096v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12096v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12096v1">A Robust and Efficient Multi-Agent Reinforcement Learning Framework for Traffic Signal Control</a>
         <span class="score score-mid">7/10</span>
@@ -326,20 +569,30 @@
       <div class="meta">Sheng-You Huang, Hsiao-Chuan Chang, Yen-Chi Chen, Ting-Han Wei, I-Hau Yeh et al. &middot; cs.AI</div>
       
       <div class="reason">Why: Keyword matches: reinforcement learning, reinforcement, multi agent, mechanisms, efficient</div>
+      
+      <button class="abstract-toggle" id="abs-btn-15" onclick="toggleAbstract(15)">Show abstract</button>
+      <div class="abstract-content" id="abs-15">Reinforcement Learning (RL) in Traffic Signal Control (TSC) faces significant hurdles in real-world deployment due to limited generalization to dynamic traffic flow variations. Existing approaches often overfit static patterns and use action spaces incompatible with driver expectations. This paper proposes a robust Multi-Agent Reinforcement Learning (MARL) framework validated in the Vissim traffic simulator. The framework integrates three mechanisms: (1) Turning Ratio Randomization, a training strategy that exposes agents to dynamic turning probabilities to enhance robustness against unseen scenarios; (2) a stability-oriented Exponential Phase Duration Adjustment action space, which balances responsiveness and precision through cyclical, exponential phase adjustments; and (3) a Neighbor-Based Observation scheme utilizing the MAPPO algorithm with Centralized Training with Decentralized Execution (CTDE). By leveraging centralized updates, this approach approximates the efficacy of global observations while maintaining scalable local communication. Experimental results demonstrate that our framework outperforms standard RL baselines, reducing average waiting time by over 10%. The proposed model exhibits superior generalization in unseen traffic scenarios and maintains high control stability, offering a practical solution for adaptive signal control.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12096v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12096v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="6">
+    <div class="paper-card" data-score="6" data-categories="stat.ML, cs.LG" data-paper-id="2603.11835v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11835v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11835v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11835v1">Hypercomplex Widely Linear Processing: Fundamentals for Quaternion Machine Learning</a>
         <span class="score score-mid">6/10</span>
       </div>
       <div class="meta">Sayed Pouria Talebi, Clive Cheong Took &middot; stat.ML, cs.LG</div>
       
-      <div class="reason">Why: Keyword matches: machine learning, foundation, learning, science, machine</div>
+      <div class="reason">Why: Keyword matches: machine learning, foundation, learning, machine, science</div>
+      
+      <button class="abstract-toggle" id="abs-btn-16" onclick="toggleAbstract(16)">Show abstract</button>
+      <div class="abstract-content" id="abs-16">Numerous attempts have been made to replicate the success of complex-valued algebra in engineering and science to other hypercomplex domains such as quaternions, tessarines, biquaternions, and octonions. Perhaps, none have matched the success of quaternions. The most useful feature of quaternions lies in their ability to model three-dimensional rotations which, in turn, have found various industrial applications such as in aeronautics and computergraphics. Recently, we have witnessed a renaissance of quaternions due to the rise of machine learning. To equip the reader to contribute to this emerging research area, this chapter lays down the foundation for: - augmented statistics for modelling quaternion-valued random processes, - widely linear models to exploit such advanced statistics, - quaternion calculus and algebra for algorithmic derivations, - mean square estimation for practical considerations. For ease of exposure, several examples are offered to facilitate the learning, understanding, and(hopefully) the adoption of this multidimensional domain.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11835v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11835v1">Abstract</a>
@@ -347,24 +600,35 @@
       </div>
     </div>
     </section>
-    <section class="profile-section">
+    <section class="profile-section" data-profile="Computer Vision &amp; Multimodal">
       <h2>Computer Vision &amp; Multimodal <span class="badge">2</span></h2>
       
-    <div class="paper-card" data-score="10">
+    <div class="paper-card" data-score="10" data-categories="cs.CV" data-paper-id="2603.11659v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11659v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11659v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11659v1">FL-MedSegBench: A Comprehensive Benchmark for Federated Learning on Medical Image Segmentation</a>
         <span class="score score-high">10/10</span>
       </div>
       <div class="meta">Meilu Zhu, Zhiwei Wang, Axiu Mao, Yuxing Li, Xiaohan Xing et al. &middot; cs.CV</div>
       
-      <div class="reason">Why: Keyword matches: image segmentation, image analysis, medical image, segmentation, learning</div>
+      <div class="reason">Why: Keyword matches: image segmentation, image analysis, medical image, segmentation, analysis</div>
+      
+      <button class="abstract-toggle" id="abs-btn-17" onclick="toggleAbstract(17)">Show abstract</button>
+      <div class="abstract-content" id="abs-17">Federated learning (FL) offers a privacy-preserving paradigm for collaborative medical image analysis without sharing raw data. However, the absence of standardized benchmarks for medical image segmentation hinders fair and comprehensive evaluation of FL methods. To address this gap, we introduce FL-MedSegBench, the first comprehensive benchmark for federated learning on medical image segmentation. Our benchmark encompasses nine segmentation tasks across ten imaging modalities, covering both 2D and 3D formats with realistic clinical heterogeneity. We systematically evaluate eight generic FL (gFL) and five personalized FL (pFL) methods across multiple dimensions: segmentation accuracy, fairness, communication efficiency, convergence behavior, and generalization to unseen domains. Extensive experiments reveal several key insights: (i) pFL methods, particularly those with client-specific batch normalization (\textit{e.g.}, FedBN), consistently outperform generic approaches; (ii) No single method universally dominates, with performance being dataset-dependent; (iii) Communication frequency analysis shows normalization-based personalization methods exhibit remarkable robustness to reduced communication frequency; (iv) Fairness evaluation identifies methods like Ditto and FedRDN that protect underperforming clients; (v) A method&#39;s generalization to unseen domains is strongly tied to its ability to perform well across participating clients. We will release an open-source toolkit to foster reproducible research and accelerate clinically applicable FL solutions, providing empirically grounded guidelines for real-world clinical deployment. The source code is available at https://github.com/meiluzhu/FL-MedSegBench.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11659v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11659v1">Abstract</a>
         <span class="code-badge">CODE</span> <a href="https://github.com/meiluzhu/FL-MedSegBench">https://github.com/meiluzhu/FL-MedSegBench</a> (2 stars)
       </div>
     </div>
-    <div class="paper-card" data-score="6">
+    <div class="paper-card" data-score="6" data-categories="cs.CV" data-paper-id="2603.12265v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12265v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12265v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12265v1">OmniStream: Mastering Perception, Reconstruction and Action in Continuous Streams</a>
         <span class="score score-mid">6/10</span>
@@ -372,31 +636,45 @@
       <div class="meta">Yibin Yan, Jilan Xu, Shangzhe Di, Haoning Wu, Weidi Xie &middot; cs.CV</div>
       
       <div class="reason">Why: Keyword matches: temporal modeling, vision language, reconstruction, understanding, temporal</div>
+      
+      <button class="abstract-toggle" id="abs-btn-18" onclick="toggleAbstract(18)">Show abstract</button>
+      <div class="abstract-content" id="abs-18">Modern visual agents require representations that are general, causal, and physically structured to operate in real-time streaming environments. However, current vision foundation models remain fragmented, specializing narrowly in image semantic perception, offline temporal modeling, or spatial geometry. This paper introduces OmniStream, a unified streaming visual backbone that effectively perceives, reconstructs, and acts from diverse visual inputs. By incorporating causal spatiotemporal attention and 3D rotary positional embeddings (3D-RoPE), our model supports efficient, frame-by-frame online processing of video streams via a persistent KV-cache. We pre-train OmniStream using a synergistic multi-task framework coupling static and temporal representation learning, streaming geometric reconstruction, and vision-language alignment on 29 datasets. Extensive evaluations show that, even with a strictly frozen backbone, OmniStream achieves consistently competitive performance with specialized experts across image and video probing, streaming geometric reconstruction, complex video and spatial reasoning, as well as robotic manipulation (unseen at training). Rather than pursuing benchmark-specific dominance, our work demonstrates the viability of training a single, versatile vision backbone that generalizes across semantic, spatial, and temporal reasoning, i.e., a more meaningful step toward general-purpose visual understanding for interactive and embodied agents.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12265v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12265v1">Abstract</a>
-        
+        <span class="code-badge">CODE</span> <a href="https://go2heart.github.io/omnistream">https://go2heart.github.io/omnistream</a>
       </div>
     </div>
     </section>
-    <section class="profile-section">
+    <section class="profile-section" data-profile="NLP &amp; Language Models">
       <h2>NLP &amp; Language Models <span class="badge">2</span></h2>
       
-    <div class="paper-card" data-score="10">
+    <div class="paper-card" data-score="10" data-categories="cs.CL" data-paper-id="2603.11772v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11772v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11772v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11772v1">Legal-DC: Benchmarking Retrieval-Augmented Generation for Legal Documents</a>
         <span class="score score-high">10/10</span>
       </div>
       <div class="meta">Yaocong Li, Qiang Lan, Leihan Zhang, Le Zhang &middot; cs.CL</div>
       
-      <div class="reason">Why: Keyword matches: augmented generation, retrieval augmented, language models, large language, generation rag</div>
+      <div class="reason">Why: Keyword matches: augmented generation, retrieval augmented, language models, generation rag, large language</div>
+      
+      <button class="abstract-toggle" id="abs-btn-19" onclick="toggleAbstract(19)">Show abstract</button>
+      <div class="abstract-content" id="abs-19">Retrieval-Augmented Generation (RAG) has emerged as a promising technology for legal document consultation, yet its application in Chinese legal scenarios faces two key limitations: existing benchmarks lack specialized support for joint retriever-generator evaluation, and mainstream RAG systems often fail to accommodate the structured nature of legal provisions. To address these gaps, this study advances two core contributions: First, we constructed the Legal-DC benchmark dataset, comprising 480 legal documents (covering areas such as market regulation and contract management) and 2,475 refined question-answer pairs, each annotated with clause-level references, filling the gap for specialized evaluation resources in Chinese legal RAG. Second, we propose the LegRAG framework, which integrates legal adaptive indexing (clause-boundary segmentation) with a dual-path self-reflection mechanism to ensure clause integrity while enhancing answer accuracy. Third, we introduce automated evaluation methods for large language models to meet the high-reliability demands of legal retrieval scenarios. LegRAG outperforms existing state-of-the-art methods by 1.3% to 5.6% across key evaluation metrics. This research provides a specialized benchmark, practical framework, and empirical insights to advance the development of Chinese legal RAG systems. Our code and data are available at https://github.com/legal-dc/Legal-DC.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11772v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11772v1">Abstract</a>
         <span class="code-badge">CODE</span> <a href="https://github.com/legal-dc/Legal-DC">https://github.com/legal-dc/Legal-DC</a> (0 stars)
       </div>
     </div>
-    <div class="paper-card" data-score="8">
+    <div class="paper-card" data-score="8" data-categories="cs.CL" data-paper-id="2603.11650v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11650v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11650v1', this)" title="Mark read">&#10003;</button>
+      </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11650v1">QChunker: Learning Question-Aware Text Chunking for Domain RAG via Multi-Agent Debate</a>
         <span class="score score-high">8/10</span>
@@ -404,6 +682,9 @@
       <div class="meta">Jihao Zhao, Daixuan Li, Pengfei Li, Shuaishuai Zu, Biao Qin et al. &middot; cs.CL</div>
       
       <div class="reason">Why: Keyword matches: augmented generation, retrieval augmented, language models, generation rag, information</div>
+      
+      <button class="abstract-toggle" id="abs-btn-20" onclick="toggleAbstract(20)">Show abstract</button>
+      <div class="abstract-content" id="abs-20">The effectiveness upper bound of retrieval-augmented generation (RAG) is fundamentally constrained by the semantic integrity and information granularity of text chunks in its knowledge base. To address these challenges, this paper proposes QChunker, which restructures the RAG paradigm from retrieval-augmentation to understanding-retrieval-augmentation. Firstly, QChunker models the text chunking as a composite task of text segmentation and knowledge completion to ensure the logical coherence and integrity of text chunks. Drawing inspiration from Hal Gregersen&#39;s &quot;Questions Are the Answer&quot; theory, we design a multi-agent debate framework comprising four specialized components: a question outline generator, text segmenter, integrity reviewer, and knowledge completer. This framework operates on the principle that questions serve as catalysts for profound insights. Through this pipeline, we successfully construct a high-quality dataset of 45K entries and transfer this capability to small language models. Additionally, to handle long evaluation chains and low efficiency in existing chunking evaluation methods, which overly rely on downstream QA tasks, we introduce a novel direct evaluation metric, ChunkScore. Both theoretical and experimental validations demonstrate that ChunkScore can directly and efficiently discriminate the quality of text chunks. Furthermore, during the text segmentation phase, we utilize document outlines for multi-path sampling to generate multiple candidate chunks and select the optimal solution employing ChunkScore. Extensive experimental results across four heterogeneous domains exhibit that QChunker effectively resolves aforementioned issues by providing RAG with more logically coherent and information-rich text chunks.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11650v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11650v1">Abstract</a>
@@ -413,13 +694,141 @@
     </section>
 
   <script>
-    function filterPapers() {
-      const q = document.getElementById('search').value.toLowerCase();
+    // State
+    let activeProfile = 'all';
+    let favOnly = false;
+
+    // localStorage helpers
+    function getFavs() {
+      try { return JSON.parse(localStorage.getItem('arxiv_favs') || '{}'); }
+      catch { return {}; }
+    }
+    function setFavs(f) { localStorage.setItem('arxiv_favs', JSON.stringify(f)); }
+    function getRead() {
+      try { return JSON.parse(localStorage.getItem('arxiv_read') || '{}'); }
+      catch { return {}; }
+    }
+    function setRead(r) { localStorage.setItem('arxiv_read', JSON.stringify(r)); }
+
+    // Toggle favorite
+    function toggleFav(id, btn) {
+      const favs = getFavs();
+      if (favs[id]) { delete favs[id]; btn.classList.remove('active'); }
+      else { favs[id] = true; btn.classList.add('active'); }
+      setFavs(favs);
+      if (favOnly) applyFilters();
+    }
+
+    // Toggle read
+    function toggleRead(id, btn) {
+      const reads = getRead();
+      const card = btn.closest('.paper-card');
+      if (reads[id]) {
+        delete reads[id];
+        btn.classList.remove('active');
+        card.classList.remove('read');
+      } else {
+        reads[id] = true;
+        btn.classList.add('active');
+        card.classList.add('read');
+      }
+      setRead(reads);
+    }
+
+    // Init fav/read state on load
+    function initCardStates() {
+      const favs = getFavs();
+      const reads = getRead();
       document.querySelectorAll('.paper-card').forEach(card => {
-        card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
+        const id = card.dataset.paperId;
+        if (favs[id]) card.querySelector('.btn-fav').classList.add('active');
+        if (reads[id]) {
+          card.querySelector('.btn-read').classList.add('active');
+          card.classList.add('read');
+        }
       });
     }
 
+    // Profile tab filter
+    function filterProfile(name, btn) {
+      activeProfile = name;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    }
+
+    // Fav-only toggle
+    function toggleFavFilter() {
+      favOnly = !favOnly;
+      document.getElementById('favBtn').classList.toggle('active', favOnly);
+      applyFilters();
+    }
+
+    // Toggle abstract
+    function toggleAbstract(idx) {
+      const el = document.getElementById('abs-' + idx);
+      const btn = document.getElementById('abs-btn-' + idx);
+      if (el.classList.contains('show')) {
+        el.classList.remove('show');
+        btn.textContent = 'Show abstract';
+      } else {
+        el.classList.add('show');
+        btn.textContent = 'Hide abstract';
+      }
+    }
+
+    // Main filter logic
+    function applyFilters() {
+      const q = document.getElementById('search').value.toLowerCase();
+      const cat = document.getElementById('catFilter').value;
+      const minScore = parseInt(document.getElementById('scoreFilter').value);
+      const favs = getFavs();
+      let visible = 0;
+      let totalCards = 0;
+
+      // Profile sections
+      document.querySelectorAll('.profile-section').forEach(sec => {
+        if (activeProfile !== 'all' && sec.dataset.profile !== activeProfile) {
+          sec.style.display = 'none';
+          return;
+        }
+        sec.style.display = '';
+
+        let sectionVisible = 0;
+        sec.querySelectorAll('.paper-card').forEach(card => {
+          totalCards++;
+          const score = parseInt(card.dataset.score) || 0;
+          const cats = card.dataset.categories || '';
+          const paperId = card.dataset.paperId || '';
+          let show = true;
+
+          // Score filter
+          if (score < minScore) show = false;
+
+          // Text search
+          if (show && q && !card.textContent.toLowerCase().includes(q)) show = false;
+
+          // Category filter
+          if (show && cat !== 'all' && !cats.includes(cat)) show = false;
+
+          // Fav filter
+          if (show && favOnly && !favs[paperId]) show = false;
+
+          card.style.display = show ? '' : 'none';
+          if (show) { visible++; sectionVisible++; }
+        });
+
+        // Hide section header if no visible cards
+        if (sectionVisible === 0 && activeProfile === 'all') {
+          sec.style.display = 'none';
+        }
+      });
+
+      document.getElementById('visibleCount').textContent =
+        visible + ' / ' + totalCards + ' papers shown';
+    }
+
+    // Theme
     function toggleTheme() {
       const html = document.documentElement;
       const current = html.getAttribute('data-theme');
@@ -428,12 +837,11 @@
       localStorage.setItem('theme', next);
       updateBtn(next);
     }
-
     function updateBtn(theme) {
       document.getElementById('themeBtn').textContent = theme === 'light' ? 'Dark' : 'Light';
     }
 
-    // Init from localStorage or system preference
+    // Init
     (function() {
       const saved = localStorage.getItem('theme');
       if (saved) {
@@ -443,6 +851,8 @@
         document.documentElement.setAttribute('data-theme', 'light');
         updateBtn('light');
       }
+      initCardStates();
+      applyFilters();
     })();
   </script>
 </body>
