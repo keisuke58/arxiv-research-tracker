@@ -133,23 +133,40 @@ def generate_html(
       --bg: #0d1117; --surface: #161b22; --border: #30363d;
       --text: #c9d1d9; --text-muted: #8b949e; --accent: #58a6ff;
       --green: #3fb950; --orange: #d29922; --red: #f85149;
+      --tldr-bg: rgba(88,166,255,0.05);
+    }}
+    [data-theme="light"] {{
+      --bg: #ffffff; --surface: #f6f8fa; --border: #d0d7de;
+      --text: #1f2328; --text-muted: #656d76; --accent: #0969da;
+      --green: #1a7f37; --orange: #9a6700; --red: #cf222e;
+      --tldr-bg: rgba(9,105,218,0.05);
     }}
     * {{ margin: 0; padding: 0; box-sizing: border-box; }}
     body {{
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
       background: var(--bg); color: var(--text); line-height: 1.6;
       max-width: 900px; margin: 0 auto; padding: 20px;
+      transition: background 0.3s, color 0.3s;
     }}
     h1 {{ color: var(--accent); margin-bottom: 8px; }}
+    .header-row {{ display: flex; align-items: center; justify-content: space-between; }}
+    .theme-toggle {{
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text); border-radius: 8px; padding: 6px 14px;
+      cursor: pointer; font-size: 14px; transition: all 0.3s;
+    }}
+    .theme-toggle:hover {{ border-color: var(--accent); }}
     .stats {{ color: var(--text-muted); margin-bottom: 24px; font-size: 14px; }}
     h2 {{ color: var(--text); margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }}
     .badge {{
-      background: var(--accent); color: #000; border-radius: 12px;
+      background: var(--accent); color: #fff; border-radius: 12px;
       padding: 2px 10px; font-size: 13px; font-weight: 600;
     }}
+    [data-theme="light"] .badge {{ color: #fff; }}
     .paper-card {{
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 8px; padding: 16px; margin-bottom: 12px;
+      transition: background 0.3s, border-color 0.3s;
     }}
     .paper-card:hover {{ border-color: var(--accent); }}
     .paper-title {{ font-size: 16px; font-weight: 600; margin-bottom: 6px; }}
@@ -157,20 +174,20 @@ def generate_html(
     .paper-title a:hover {{ text-decoration: underline; }}
     .score {{
       display: inline-block; padding: 2px 8px; border-radius: 4px;
-      font-size: 12px; font-weight: 700; margin-left: 8px;
+      font-size: 12px; font-weight: 700; margin-left: 8px; color: #fff;
     }}
-    .score-high {{ background: var(--green); color: #000; }}
-    .score-mid {{ background: var(--orange); color: #000; }}
-    .score-low {{ background: var(--text-muted); color: #000; }}
+    .score-high {{ background: var(--green); }}
+    .score-mid {{ background: var(--orange); }}
+    .score-low {{ background: var(--text-muted); }}
     .meta {{ font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }}
     .tldr {{ font-style: italic; margin: 8px 0; padding: 8px 12px;
-             border-left: 3px solid var(--accent); background: rgba(88,166,255,0.05); }}
+             border-left: 3px solid var(--accent); background: var(--tldr-bg); }}
     .reason {{ font-size: 13px; color: var(--text-muted); margin-top: 6px; }}
     .links {{ margin-top: 8px; font-size: 13px; }}
     .links a {{ color: var(--accent); margin-right: 12px; text-decoration: none; }}
     .links a:hover {{ text-decoration: underline; }}
     .code-badge {{
-      display: inline-block; background: var(--green); color: #000;
+      display: inline-block; background: var(--green); color: #fff;
       padding: 1px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;
     }}
     .filter-bar {{
@@ -179,7 +196,7 @@ def generate_html(
     .filter-bar input {{
       flex: 1; min-width: 200px; padding: 8px 12px; border-radius: 6px;
       border: 1px solid var(--border); background: var(--surface);
-      color: var(--text); font-size: 14px;
+      color: var(--text); font-size: 14px; transition: all 0.3s;
     }}
     .filter-bar input:focus {{ outline: none; border-color: var(--accent); }}
     @media (max-width: 600px) {{
@@ -189,7 +206,10 @@ def generate_html(
   </style>
 </head>
 <body>
-  <h1>arXiv Digest</h1>
+  <div class="header-row">
+    <h1>arXiv Digest</h1>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
+  </div>
   <p class="stats">{date_str} &middot; {relevant} relevant / {total} total papers</p>
 
   <div class="filter-bar">
@@ -205,6 +225,31 @@ def generate_html(
         card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
       }});
     }}
+
+    function toggleTheme() {{
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateBtn(next);
+    }}
+
+    function updateBtn(theme) {{
+      document.getElementById('themeBtn').textContent = theme === 'light' ? 'Dark' : 'Light';
+    }}
+
+    // Init from localStorage or system preference
+    (function() {{
+      const saved = localStorage.getItem('theme');
+      if (saved) {{
+        document.documentElement.setAttribute('data-theme', saved);
+        updateBtn(saved);
+      }} else if (window.matchMedia('(prefers-color-scheme: light)').matches) {{
+        document.documentElement.setAttribute('data-theme', 'light');
+        updateBtn('light');
+      }}
+    }})();
   </script>
 </body>
 </html>"""

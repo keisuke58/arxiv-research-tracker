@@ -17,8 +17,12 @@ from notify import send_notifications
 
 
 def load_config(config_path: str = "config.yaml") -> dict:
-    with open(config_path) as f:
-        return yaml.safe_load(f)
+    config_file = Path(config_path).resolve()
+    with open(config_file) as f:
+        config = yaml.safe_load(f)
+    # Store project root (directory containing config.yaml)
+    config["_project_root"] = config_file.parent
+    return config
 
 
 def run_pipeline(config: dict, skip_notify: bool = False, use_llm: bool = False) -> None:
@@ -37,6 +41,8 @@ def run_pipeline(config: dict, skip_notify: bool = False, use_llm: bool = False)
     threshold = scoring_cfg.get("threshold", 6)
     batch_size = llm_cfg.get("scoring_batch_size", 8)
 
+    project_root = config.get("_project_root", Path.cwd())
+
     enabled_profiles = [p for p in profiles if p.get("enabled", True)]
     if not enabled_profiles:
         print("No enabled profiles found in config.")
@@ -54,7 +60,7 @@ def run_pipeline(config: dict, skip_notify: bool = False, use_llm: bool = False)
         max_papers_per_category=max_papers,
         days_back=days_back,
     )
-    raw_path = save_raw_papers(papers_by_profile)
+    raw_path = save_raw_papers(papers_by_profile, data_dir=str(project_root / "data"))
     print()
 
     # Step 2: Score relevance
@@ -112,10 +118,17 @@ def run_pipeline(config: dict, skip_notify: bool = False, use_llm: bool = False)
         print()
 
     # Step 5: Generate output
+    # Resolve paths relative to config file (project root)
+    project_root = config.get("_project_root", Path.cwd())
+    data_dir = str(project_root / "data")
+    docs_dir = str(project_root / "docs")
+
     print("[5/5] Generating output...")
     created = save_outputs(
         papers_by_profile,
         output_cfg,
+        data_dir=data_dir,
+        docs_dir=docs_dir,
         threshold=threshold,
     )
 
@@ -125,7 +138,7 @@ def run_pipeline(config: dict, skip_notify: bool = False, use_llm: bool = False)
         print("Sending notifications...")
         html_content = ""
         if output_cfg.get("html", True):
-            html_path = Path("docs") / "index.html"
+            html_path = Path(docs_dir) / "index.html"
             if html_path.exists():
                 html_content = html_path.read_text()
         send_notifications(
@@ -165,6 +178,7 @@ def main():
     config = load_config(args.config)
 
     if args.dry_run:
+        project_root = config.get("_project_root", Path.cwd())
         profiles = [p for p in config.get("profiles", []) if p.get("enabled", True)]
         print("=== DRY RUN (fetch only) ===")
         papers = fetch_all_papers(
@@ -172,7 +186,7 @@ def main():
             max_papers_per_category=config.get("global", {}).get("max_papers_per_category", 200),
             days_back=config.get("global", {}).get("days_back", 1),
         )
-        save_raw_papers(papers)
+        save_raw_papers(papers, data_dir=str(project_root / "data"))
         print("=== Done (dry run) ===")
     else:
         run_pipeline(config, skip_notify=args.skip_notify, use_llm=args.llm)
