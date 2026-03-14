@@ -1,12 +1,14 @@
 # arxiv-research-tracker
 
-Automated daily arXiv paper collection with LLM-powered relevance scoring, structured summaries, and code detection.
+Automated daily arXiv paper collection with relevance scoring, structured summaries, and code detection.
+
+**[Live Digest](https://keisuke58.github.io/arxiv-research-tracker/)** | **[Repository](https://github.com/keisuke58/arxiv-research-tracker)**
 
 ## Features
 
 - **Multi-profile support** — track multiple research areas with separate categories and interests
-- **LLM relevance scoring** — papers rated 1-10 based on your natural-language research interests
-- **Structured summaries** — TL;DR, motivation, method, result, conclusion for each relevant paper
+- **Two scoring modes** — keyword-based (free, no API) or LLM-powered (opt-in with `--llm`)
+- **Structured summaries** — TL;DR, motivation, method, result, conclusion (LLM mode)
 - **Code detection** — automatically finds GitHub repos linked in papers, fetches star counts
 - **Multiple outputs** — Markdown archives, HTML digest (GitHub Pages), email, Slack
 - **GitHub Actions** — fully automated daily pipeline, zero infrastructure
