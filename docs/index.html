@@ -124,6 +124,40 @@
     .score-high { background: var(--green); }
     .score-mid { background: var(--orange); }
     .score-low { background: var(--text-muted); }
+
+    /* Quality score (100pt) */
+    .quality-score {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-left: 6px; font-size: 12px;
+    }
+    .grade {
+      display: inline-block; padding: 1px 6px; border-radius: 3px;
+      font-weight: 800; font-size: 11px; color: #fff;
+    }
+    .grade-S { background: linear-gradient(135deg, #ff6b6b, #ffd93d); }
+    .grade-A { background: var(--green); }
+    .grade-B { background: var(--accent); }
+    .grade-C { background: var(--text-muted); }
+    .grade-D { background: #555; }
+    .quality-num { color: var(--text-muted); font-size: 11px; }
+    .quality-breakdown {
+      display: none; margin-top: 6px; padding: 8px 10px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+      font-size: 11px; color: var(--text-muted);
+    }
+    .quality-breakdown.show { display: block; }
+    .breakdown-bar {
+      display: flex; align-items: center; gap: 6px; margin: 2px 0;
+    }
+    .breakdown-bar .bar-label { width: 90px; text-align: right; }
+    .breakdown-bar .bar-track {
+      flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+    }
+    .breakdown-bar .bar-fill {
+      height: 100%; border-radius: 3px; transition: width 0.3s;
+    }
+    .breakdown-bar .bar-val { width: 30px; font-size: 10px; }
+
     .meta { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
 
     /* Abstract */
@@ -173,7 +207,7 @@
       <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Light</button>
     </div>
   </div>
-  <p class="stats">2026-03-14 &middot; 21 relevant / 251 total papers</p>
+  <p class="stats">2026-03-14 &middot; 26 relevant / 243 total papers</p>
   
   <details class="date-nav">
     <summary>Date Archive (1 digests)</summary>
@@ -205,8 +239,10 @@
         <option value="cs.GT">cs.GT</option>
         <option value="cs.LG">cs.LG</option>
         <option value="cs.MA">cs.MA</option>
+        <option value="math.AP">math.AP</option>
         <option value="math.DS">math.DS</option>
         <option value="math.NA">math.NA</option>
+        <option value="math.OC">math.OC</option>
         <option value="math.ST">math.ST</option>
         <option value="physics.bio-ph">physics.bio-ph</option>
         <option value="physics.comp-ph">physics.comp-ph</option>
@@ -230,7 +266,7 @@
     <section class="profile-section" data-profile="Computational Mechanics &amp; UQ">
       <h2>Computational Mechanics &amp; UQ <span class="badge">5</span></h2>
       
-    <div class="paper-card" data-score="10" data-categories="stat.ML, cs.LG, stat.ME" data-paper-id="2603.11965v1">
+    <div class="paper-card" data-score="10" data-quality="34" data-categories="stat.ML, cs.LG, stat.ME" data-paper-id="2603.11965v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11965v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11965v1', this)" title="Mark read">&#10003;</button>
@@ -238,10 +274,42 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11965v1">Uncovering Locally Low-dimensional Structure in Networks by Locally Optimal Spectral Embedding</a>
         <span class="score score-high">10/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(0)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">34/100</span>
+        </span>
       </div>
       <div class="meta">Hannah Sansford, Nick Whiteley, Patrick Rubin-Delanchy &middot; stat.ML, cs.LG, stat.ME</div>
       
       <div class="reason">Why: Keyword matches: spectral, networks, finite</div>
+      
+      <div class="quality-breakdown" id="qb-0">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:40%;background:#c678dd"></div></div>
+          <span class="bar-val">6/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
       
       <button class="abstract-toggle" id="abs-btn-0" onclick="toggleAbstract(0)">Show abstract</button>
       <div class="abstract-content" id="abs-0">Standard Adjacency Spectral Embedding (ASE) relies on a global low-rank assumption often incompatible with the sparse, transitive structure of real-world networks, causing local geometric features to be &#39;smeared&#39;. To address this, we introduce Local Adjacency Spectral Embedding (LASE), which uncovers locally low-dimensional structure via weighted spectral decomposition. Under a latent position model with a kernel feature map, we treat the image of latent positions as a locally low-dimensional set in infinite-dimensional feature space. We establish finite-sample bounds quantifying the trade-off between the statistical cost of localisation and the reduced truncation error achieved by targeting a locally low-dimensional region of the embedding. Furthermore, we prove that sufficient localisation induces rapid spectral decay and the emergence of a distinct spectral gap, theoretically justifying low-dimensional local embeddings. Experiments on synthetic and real networks show that LASE improves local reconstruction and visualisation over global and subgraph baselines, and we introduce UMAP-LASE for assembling overlapping local embeddings into high-fidelity global visualisations.</div>
@@ -251,7 +319,7 @@
         
       </div>
     </div>
-    <div class="paper-card" data-score="8" data-categories="physics.plasm-ph, physics.comp-ph" data-paper-id="2603.11699v1">
+    <div class="paper-card" data-score="8" data-quality="23" data-categories="physics.plasm-ph, physics.comp-ph" data-paper-id="2603.11699v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11699v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11699v1', this)" title="Mark read">&#10003;</button>
@@ -259,10 +327,42 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11699v1">Stochastic single-stage stellarator optimization using fixed-boundary equilibria</a>
         <span class="score score-high">8/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(1)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">23/100</span>
+        </span>
       </div>
       <div class="meta">Pedro F. Gil, Jason Smoniewski, Rogerio Jorge, Paul Huslage, Eve V. Stenson &middot; physics.plasm-ph, physics.comp-ph</div>
       
       <div class="reason">Why: Keyword matches: stochastic, boundary, methods</div>
+      
+      <div class="quality-breakdown" id="qb-1">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:64%;background:var(--accent)"></div></div>
+          <span class="bar-val">16/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
       
       <button class="abstract-toggle" id="abs-btn-1" onclick="toggleAbstract(1)">Show abstract</button>
       <div class="abstract-content" id="abs-1">In this paper, single-stage stellarator optimization is combined with stochastic coil optimization to improve the robustness of the stellarator as compared to deterministic methods. The plasma boundary, solved with an MHD solver in fixed-boundary mode, is linked to a set of randomly perturbed coils via the squared flux. The optimizer avoids sharp local minima and can reach improved configurations. Two different configurations obtained with our method, one quasi-axisymmetric and one quasi-helically symmetric, are compared against both the standard stochastic stage II method and the single-stage method. The new configurations shown here yield improved squared flux, quasisymmetry, and particle loss following a posteriori perturbation of the coils.</div>
@@ -272,7 +372,7 @@
         
       </div>
     </div>
-    <div class="paper-card" data-score="8" data-categories="stat.ME" data-paper-id="2603.11719v1">
+    <div class="paper-card" data-score="8" data-quality="19" data-categories="stat.ME" data-paper-id="2603.11719v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11719v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11719v1', this)" title="Mark read">&#10003;</button>
@@ -280,10 +380,42 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11719v1">Cross-Validation in Bipartite Networks</a>
         <span class="score score-high">8/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(2)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">19/100</span>
+        </span>
       </div>
       <div class="meta">Bokai Yang, Yuanxing Chen, Yuhong Yang &middot; stat.ME</div>
       
       <div class="reason">Why: Keyword matches: stochastic, networks, methods, models</div>
+      
+      <div class="quality-breakdown" id="qb-2">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:64%;background:var(--accent)"></div></div>
+          <span class="bar-val">16/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--orange)"></div></div>
+          <span class="bar-val">1/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--red)"></div></div>
+          <span class="bar-val">2/15</span>
+        </div>
+      </div>
       
       <button class="abstract-toggle" id="abs-btn-2" onclick="toggleAbstract(2)">Show abstract</button>
       <div class="abstract-content" id="abs-2">Although network data have become increasingly popular and widely studied, the vast majority of statistical literature has focused on unipartite networks, leaving relatively few theoretical results for bipartite networks. In this paper, we study the model selection problem for bipartite stochastic block models. We propose a penalized cross-validation approach that incorporates appropriate penalty terms for different candidate models, addressing the new and challenging issue that underfitting may occur on one side while overfitting occurs on the other. To the best of our knowledge, our method provides the first consistency guarantee for model selection in bipartite networks. Through simulations under various scenarios and analysis of two real datasets, we demonstrate that our approach not only outperforms traditional modularity-based and projection-based methods, but also naturally preserves potential asymmetry between the two node sets.</div>
@@ -293,7 +425,7 @@
         
       </div>
     </div>
-    <div class="paper-card" data-score="6" data-categories="stat.AP, math.ST, stat.CO, stat.ME" data-paper-id="2603.11685v1">
+    <div class="paper-card" data-score="6" data-quality="14" data-categories="stat.AP, math.ST, stat.CO, stat.ME" data-paper-id="2603.11685v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11685v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11685v1', this)" title="Mark read">&#10003;</button>
@@ -301,10 +433,42 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11685v1">On the Unit Teissier Distribution: Properties, Estimation Procedures and Applications</a>
         <span class="score score-mid">6/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(3)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">14/100</span>
+        </span>
       </div>
       <div class="meta">Zuber Akhter, Mohamed A. Abdelaziz, M. Z. Anis, Ahmed Z. Afify &middot; stat.AP, math.ST, stat.CO, stat.ME</div>
       
       <div class="reason">Why: Keyword matches: simulation, bayesian, methods</div>
+      
+      <div class="quality-breakdown" id="qb-3">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--accent)"></div></div>
+          <span class="bar-val">8/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:40%;background:var(--red)"></div></div>
+          <span class="bar-val">6/15</span>
+        </div>
+      </div>
       
       <button class="abstract-toggle" id="abs-btn-3" onclick="toggleAbstract(3)">Show abstract</button>
       <div class="abstract-content" id="abs-3">The Teissier distribution, originally proposed by Teissier [31], was designed to model mortality due to aging in domestic animals. More recently, Krishna et al. [19] introduced the Unit Teissier (UT) distribution on the interval (0, 1) through the transformation $X=e^{-Y}$, where $Y$ follows the Teissier distribution. In their work, the authors derived several fundamental properties of the UT distribution and investigated parameter estimation using maximum likelihood, least squares, weighted least squares and Bayesian methods. Building upon this work, the present paper develops additional theoretical and inferential results for the UT distribution. In particular, closed-form expressions for single moments of order statistics and L-moments are obtained, and characterization results based on truncated moments are established. Furthermore, several alternative parameter estimation methods are considered, including maximum product of spacings, Cramér-von Mises, Anderson-Darling, right-tail Anderson-Darling, percentile and L-moment estimation, while the estimation methods previously studied by Krishna et al. [19] are also included for comparison. Extensive simulation studies under various parameter settings and sample sizes are conducted to assess and compare the performance of the estimators. Finally, the flexibility and practical utility of the UT distribution are demonstrated using a real dataset.</div>
@@ -314,7 +478,7 @@
         
       </div>
     </div>
-    <div class="paper-card" data-score="6" data-categories="stat.ME" data-paper-id="2603.11761v1">
+    <div class="paper-card" data-score="6" data-quality="14" data-categories="stat.ME" data-paper-id="2603.11761v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11761v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11761v1', this)" title="Mark read">&#10003;</button>
@@ -322,10 +486,42 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11761v1">Causal Influence Maximization with Steady-State Guarantees</a>
         <span class="score score-mid">6/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(4)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">14/100</span>
+        </span>
       </div>
       <div class="meta">Renjie Cao, Zhuoxin Yan, Xinyan Su, Zhiheng Zhang &middot; stat.ME</div>
       
       <div class="reason">Why: Keyword matches: structural, inference, networks</div>
+      
+      <div class="quality-breakdown" id="qb-4">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--accent)"></div></div>
+          <span class="bar-val">8/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
       
       <button class="abstract-toggle" id="abs-btn-4" onclick="toggleAbstract(4)">Show abstract</button>
       <div class="abstract-content" id="abs-4">Influence maximization in networks is a central problem in machine learning and causal inference, where an intervention on a subset of individuals triggers a diffusion process through the network. Existing approaches typically optimize short-horizon rewards or rely on strong parametric assumptions, offering limited guarantees for longrun causal outcomes. In this work, we address the problem of selecting a seed set to maximize the total steady-state potential outcome under budget constraints. Theoretically, we demonstrate that under a low-probability propagation assumption, the high-dimensional path-dependent dynamics can be compressed into a low-dimensional exposure mapping with a bounded second-order approximation error. Leveraging this structural reduction, we propose CIM, a two-stage framework that first learns shape-constrained exposureresponse functions from observational data and then optimizes the objective via a greedy strategy. Our approach bridges causal inference with network optimization, providing provable guarantees for both the estimation of outcome functions and the approximation ratio of the influence maximization.</div>
@@ -337,41 +533,105 @@
     </div>
     </section>
     <section class="profile-section" data-profile="Numerical Methods &amp; VEM">
-      <h2>Numerical Methods &amp; VEM <span class="badge">2</span></h2>
+      <h2>Numerical Methods &amp; VEM <span class="badge">5</span></h2>
       
-    <div class="paper-card" data-score="10" data-categories="math.NA" data-paper-id="2603.11668v1">
+    <div class="paper-card" data-score="10" data-quality="27" data-categories="math.NA" data-paper-id="2603.11953v1">
       <div class="card-actions">
-        <button class="btn-fav" onclick="toggleFav('2603.11668v1', this)" title="Favorite">&#9734;</button>
-        <button class="btn-read" onclick="toggleRead('2603.11668v1', this)" title="Mark read">&#10003;</button>
+        <button class="btn-fav" onclick="toggleFav('2603.11953v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11953v1', this)" title="Mark read">&#10003;</button>
       </div>
       <div class="paper-title">
-        <a href="https://arxiv.org/abs/2603.11668v1">Compact LABFM: a framework for meshless methods with spectral-like resolving power</a>
+        <a href="https://arxiv.org/abs/2603.11953v1">Mixed precision thin SVD algorithms based on the Gram matrix</a>
         <span class="score score-high">10/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(5)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">27/100</span>
+        </span>
       </div>
-      <div class="meta">Henry M. Broadley, Steven J. Lind, Jack R. C. King &middot; math.NA</div>
+      <div class="meta">Erin Carson, Yuxin Ma, Meiyue Shao &middot; math.NA</div>
       
-      <div class="reason">Why: Keyword matches: finite differences, meshless methods, differences, arbitrary, meshless</div>
+      <div class="reason">Why: Keyword matches: analysis, methods, mixed, based, and</div>
+      
+      <div class="quality-breakdown" id="qb-5">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--red)"></div></div>
+          <span class="bar-val">2/15</span>
+        </div>
+      </div>
       
       <button class="abstract-toggle" id="abs-btn-5" onclick="toggleAbstract(5)">Show abstract</button>
-      <div class="abstract-content" id="abs-5">Meshless methods are often used in numerical simulations of systems of partial differential equations (PDEs), particularly those which involve complex geometries or free surfaces. Here we present a novel compact scheme based on the local anisotropic basis function method (LABFM), a meshless method which provides approximations to spatial operators to arbitrary polynomial consistency. Our approach mimics compact finite-differences by using implicit stencils to optimise the resolving power of each operator, whilst retaining diagonal dominance of the resulting global sparse linear system. The new method is demonstrated to provide improved approximations by a series of convergence tests and resolving power analysis, before solutions to canonical PDEs are computed. Significant gains in accuracy are observed, in particular for solutions containing high wavenumber components. Our compact meshfree method provides a pathway to high-order simulations of PDEs in complex geometries with spectral-like resolving power, and has the potential to lead to a step-change in the accuracy of numerical solutions to such problems.</div>
+      <div class="abstract-content" id="abs-5">In this work, we present a mixed precision algorithm that leverages the Gram matrix and Jacobi methods to compute the singular value decomposition (SVD) of tall-and-skinny matrices. By constructing the Gram matrix in higher precision and coupling it with a Jacobi algorithm, our theoretical analysis and numerical experiments both indicate that the singular values computed by this mixed precision thin SVD algorithm attain high relative accuracy. In practice, our mixed precision thin SVD algorithm yields speedups of over 10x on a single CPU and about 2x on distributed memory systems when compared with traditional thin SVD methods.</div>
       <div class="links">
-        <a href="https://arxiv.org/pdf/2603.11668v1">PDF</a>
-        <a href="https://arxiv.org/abs/2603.11668v1">Abstract</a>
+        <a href="https://arxiv.org/pdf/2603.11953v1">PDF</a>
+        <a href="https://arxiv.org/abs/2603.11953v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="6" data-categories="math.NA" data-paper-id="2603.11696v1">
+    <div class="paper-card" data-score="10" data-quality="30" data-categories="math.NA" data-paper-id="2603.11696v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11696v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11696v1', this)" title="Mark read">&#10003;</button>
       </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11696v1">Non-uniform $α$-Robust Alikhanov Mixed FEM with Optimal Convergence for the Time-Fractional Allen--Cahn Equation</a>
-        <span class="score score-mid">6/10</span>
+        <span class="score score-high">10/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(6)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">30/100</span>
+        </span>
       </div>
       <div class="meta">Abhinav Jha, Samir Karaa, Aditi Tomar &middot; math.NA</div>
       
       <div class="reason">Why: Keyword matches: discretization, polyhedral, element, finite, error</div>
+      
+      <div class="quality-breakdown" id="qb-6">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--red)"></div></div>
+          <span class="bar-val">2/15</span>
+        </div>
+      </div>
       
       <button class="abstract-toggle" id="abs-btn-6" onclick="toggleAbstract(6)">Show abstract</button>
       <div class="abstract-content" id="abs-6">We investigate a mixed finite element method for the spatial discretization of a time-fractional Allen--Cahn equation defined on a convex polyhedral domain, combined with a nonuniform Alikhanov scheme for the temporal approximation. Under suitable regularity assumptions on the initial data that are weaker than those typically imposed in the literature, we establish regularity results for the solution and its flux. We then derive optimal $L^2$-error estimates, up to a logarithmic factor, for both the solution and the flux. The estimates are robust with respect to the fractional order $α$, in the sense that the associated constants remain bounded as $α\to 1^{-}$. Numerical experiments are presented to confirm the theoretical findings.</div>
@@ -381,11 +641,170 @@
         
       </div>
     </div>
+    <div class="paper-card" data-score="7" data-quality="19" data-categories="math.OC, math.AP, math.NA" data-paper-id="2603.12167v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12167v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12167v1', this)" title="Mark read">&#10003;</button>
+      </div>
+      <div class="paper-title">
+        <a href="https://arxiv.org/abs/2603.12167v1">Operator Splitting, Policy Iteration, and Machine Learning for Stochastic Optimal Control</a>
+        <span class="score score-mid">7/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(7)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">19/100</span>
+        </span>
+      </div>
+      <div class="meta">Alain Bensoussan, Thien P. B. Nguyen, Minh-Binh Tran, Son N. T. Tu &middot; math.OC, math.AP, math.NA</div>
+      
+      <div class="reason">Why: Keyword matches: analysis, methods, error, based, and</div>
+      
+      <div class="quality-breakdown" id="qb-7">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--accent)"></div></div>
+          <span class="bar-val">12/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-7" onclick="toggleAbstract(7)">Show abstract</button>
+      <div class="abstract-content" id="abs-7">We propose a splitting approach to solve the second-order Hamilton--Jacobi equation, reducing it to a heat step and a purely first-order step. The latter is implemented using a gradient value policy iteration algorithm, enabling efficient characteristic-based machine learning methods. We establish convergence rates for the splitting method. In particular, the $L^\infty$ error is bounded below by $\mathcal{O}(h)$ and above by $\mathcal{O}(h^{1/7})$ for Lipschitz initial data; this improves to $\mathcal{O}(h^{1/5})$ for semiconcave data and to $\mathcal{O}(h^{1/3})$ for $C^2$ data. We also prove an upper $L^1$ error estimate of order $\mathcal{O}(h^{1/2})$ in the periodic setting, where $h$ is the splitting step. For the first-order step, we provide a weighted $L^2$ error analysis that shows exponential convergence. Each iteration solves linear characteristic equations and learns the value function by minimizing a weighted value gradient loss. The approach yields stable and accurate numerical results.</div>
+      <div class="links">
+        <a href="https://arxiv.org/pdf/2603.12167v1">PDF</a>
+        <a href="https://arxiv.org/abs/2603.12167v1">Abstract</a>
+        
+      </div>
+    </div>
+    <div class="paper-card" data-score="7" data-quality="15" data-categories="math.NA" data-paper-id="2603.12134v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12134v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12134v1', this)" title="Mark read">&#10003;</button>
+      </div>
+      <div class="paper-title">
+        <a href="https://arxiv.org/abs/2603.12134v1">Global and local helicity-preservation in the finite element discretisation of magnetic relaxation</a>
+        <span class="score score-mid">7/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(8)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">15/100</span>
+        </span>
+      </div>
+      <div class="meta">Patrick E. Farrell, Mingdong He, Kaibo Hu, Ganghui Zhang &middot; math.NA</div>
+      
+      <div class="reason">Why: Keyword matches: element, methods, finite, mixed, based</div>
+      
+      <div class="quality-breakdown" id="qb-8">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--accent)"></div></div>
+          <span class="bar-val">12/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-8" onclick="toggleAbstract(8)">Show abstract</button>
+      <div class="abstract-content" id="abs-8">Magnetic relaxation drives plasma toward lower-energy equilibria under helicity constraints. In ideal magnetohydrodynamics (MHD), helicity is locally conserved, while resistive theories such as Taylor relaxation preserve only global helicity. This distinction has important implications for structure-preserving numerical methods. We compare three finite element formulations: an unconstrained scheme that does not conserve helicity, a mixed method based on finite element exterior calculus that preserves all local helicities, and a Lagrange multiplier approach that enforces only global helicity conservation. Numerical experiments on braided and knotted magnetic fields show that local helicity preservation prevents spurious reconnection and maintains nontrivial topology in ideal MHD or magneto-friction, whereas enforcing only global helicity allows further relaxation through local reconnection. Numerical results on magnetic knots and braids are provided. These results clarify how different levels of discrete helicity constraints influence magnetic relaxation and equilibrium structure in numerical computation.</div>
+      <div class="links">
+        <a href="https://arxiv.org/pdf/2603.12134v1">PDF</a>
+        <a href="https://arxiv.org/abs/2603.12134v1">Abstract</a>
+        
+      </div>
+    </div>
+    <div class="paper-card" data-score="7" data-quality="17" data-categories="math.NA" data-paper-id="2603.11871v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.11871v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.11871v1', this)" title="Mark read">&#10003;</button>
+      </div>
+      <div class="paper-title">
+        <a href="https://arxiv.org/abs/2603.11871v1">An error control framework for computing the exponential of matrices arising from the finite element discretization</a>
+        <span class="score score-mid">7/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(9)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">17/100</span>
+        </span>
+      </div>
+      <div class="meta">Fuminori Tatsuoka, Yuto Miyatake, Tomohiro Sogabe &middot; math.NA</div>
+      
+      <div class="reason">Why: Keyword matches: discretization, element, methods, finite, error</div>
+      
+      <div class="quality-breakdown" id="qb-9">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--accent)"></div></div>
+          <span class="bar-val">12/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--red)"></div></div>
+          <span class="bar-val">2/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-9" onclick="toggleAbstract(9)">Show abstract</button>
+      <div class="abstract-content" id="abs-9">Several methods for computing the action of the matrix exponential $\mathrm{e}^{\boldsymbol{A}} \boldsymbol{b}$ are expressed by substituting $\boldsymbol{A}$ into a rational approximation of the scalar exponential function. The error of such methods can be estimated using the numerical range of $\boldsymbol{A}$, which enables the computation of $\mathrm{e}^{\boldsymbol{A}}\boldsymbol{b}$ with a prescribed accuracy. However, when the input matrix has the structure $\boldsymbol{A} = τ\boldsymbol{M}^{-1} \boldsymbol{K}$, this approach is challenging because computing the bounding box of numerical range is difficult and the numerical range may be too large to construct rational approximations on it. In this paper, focusing on the case where $\boldsymbol{M}$ is a well-conditioned symmetric positive definite matrix, we propose considering the numerical range of a similarity transformed matrix of $\boldsymbol{A}$. The numerical range of transformed matrix is not only numerically computable but can also be theoretically bounded depending on properties of $\boldsymbol{K}$. Numerical experiments confirm that the computations can be performed within the prescribed error tolerance.</div>
+      <div class="links">
+        <a href="https://arxiv.org/pdf/2603.11871v1">PDF</a>
+        <a href="https://arxiv.org/abs/2603.11871v1">Abstract</a>
+        
+      </div>
+    </div>
     </section>
     <section class="profile-section" data-profile="Biofilm &amp; Microbial Modeling">
       <h2>Biofilm &amp; Microbial Modeling <span class="badge">2</span></h2>
       
-    <div class="paper-card" data-score="10" data-categories="cond-mat.stat-mech, physics.bio-ph" data-paper-id="2603.12184v1">
+    <div class="paper-card" data-score="10" data-quality="29" data-categories="cond-mat.stat-mech, physics.bio-ph" data-paper-id="2603.12184v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12184v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12184v1', this)" title="Mark read">&#10003;</button>
@@ -393,20 +812,52 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12184v1">Non-Markovian Entropy Dynamics in Living Systems from the Keldysh Formalism</a>
         <span class="score score-high">10/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(10)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">29/100</span>
+        </span>
       </div>
       <div class="meta">Feiyi Liu, Min Guo, Hongwei Tan, Yang Wang &middot; cond-mat.stat-mech, physics.bio-ph</div>
       
       <div class="reason">Why: Keyword matches: biological, dynamics, systems, and</div>
       
-      <button class="abstract-toggle" id="abs-btn-7" onclick="toggleAbstract(7)">Show abstract</button>
-      <div class="abstract-content" id="abs-7">Living systems are open nonequilibrium systems that continuously exchange energy, matter, and information with their environments, leading to stochastic dynamics with memory and active fluctuations. In this study, we develop a non-Markovian theoretical framework for the entropy dynamics of living systems based on the Keldysh functional formalism and stochastic thermodynamics. The approach naturally incorporates colored environmental noise, memory-dependent dissipation, and many-body interactions, yielding generalized Langevin dynamics and non-Markovian master equations. Within this framework we derive an exact frequency-domain expression for the entropy production rate and show that violations of the fluctuation-dissipation relation provide a direct thermodynamic signature of active biological fluctuations. We further demonstrate that environmental memory enhances low-frequency fluctuations and entropy production, leading to critical slowing down near dynamical instability. These results provide a microscopic physical foundation for the entropy &quot;bathtub&quot; picture of living systems and connect entropy evolution with development, aging, and death in nonequilibrium dynamics.</div>
+      <div class="quality-breakdown" id="qb-10">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-10" onclick="toggleAbstract(10)">Show abstract</button>
+      <div class="abstract-content" id="abs-10">Living systems are open nonequilibrium systems that continuously exchange energy, matter, and information with their environments, leading to stochastic dynamics with memory and active fluctuations. In this study, we develop a non-Markovian theoretical framework for the entropy dynamics of living systems based on the Keldysh functional formalism and stochastic thermodynamics. The approach naturally incorporates colored environmental noise, memory-dependent dissipation, and many-body interactions, yielding generalized Langevin dynamics and non-Markovian master equations. Within this framework we derive an exact frequency-domain expression for the entropy production rate and show that violations of the fluctuation-dissipation relation provide a direct thermodynamic signature of active biological fluctuations. We further demonstrate that environmental memory enhances low-frequency fluctuations and entropy production, leading to critical slowing down near dynamical instability. These results provide a microscopic physical foundation for the entropy &quot;bathtub&quot; picture of living systems and connect entropy evolution with development, aging, and death in nonequilibrium dynamics.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12184v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12184v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="8" data-categories="cs.GT, math.DS, q-bio.PE" data-paper-id="2603.12107v1">
+    <div class="paper-card" data-score="8" data-quality="19" data-categories="cs.GT, math.DS, q-bio.PE" data-paper-id="2603.12107v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12107v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12107v1', this)" title="Mark read">&#10003;</button>
@@ -414,13 +865,45 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12107v1">Social Distancing Equilibria in Games under Conventional SI Dynamics</a>
         <span class="score score-high">8/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(11)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">19/100</span>
+        </span>
       </div>
       <div class="meta">Connor D Olson, Timothy C Reluga &middot; cs.GT, math.DS, q-bio.PE</div>
       
-      <div class="reason">Why: Keyword matches: dynamics, analysis, disease, theory, game</div>
+      <div class="reason">Why: Keyword matches: analysis, dynamics, disease, theory, game</div>
       
-      <button class="abstract-toggle" id="abs-btn-8" onclick="toggleAbstract(8)">Show abstract</button>
-      <div class="abstract-content" id="abs-8">The mathematical characterization of social-distancing games in classical epidemic theory remains an important question, for their applications to both infectious-disease theory and memetic theory. We consider a special case of the dynamic finite-duration SI social-distancing game where payoffs are accounted using Markov decision theory with zero-discounting, while distancing is constrained by threshold-linear running-costs, and the running-cost of perfect-distancing is finite. In this special case, we are able construct strategic equilibria satisfying the Nash best-response condition explicitly by integration. Our constructions are obtained using a new change of variables which simplifies the geometry and analysis.As it turns out, there are no singular solutions, and a time-dependent bang-bang strategy consisting of a wait-and-see phase followed by a lock-down phase is always the unique strategic equilibrium. We also show that in a restricted strategy space the bang-bang Nash equilibrium is an ESS, and that the optimal public policy exactly corresponds with the equilibrium strategy.</div>
+      <div class="quality-breakdown" id="qb-11">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:64%;background:var(--accent)"></div></div>
+          <span class="bar-val">16/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-11" onclick="toggleAbstract(11)">Show abstract</button>
+      <div class="abstract-content" id="abs-11">The mathematical characterization of social-distancing games in classical epidemic theory remains an important question, for their applications to both infectious-disease theory and memetic theory. We consider a special case of the dynamic finite-duration SI social-distancing game where payoffs are accounted using Markov decision theory with zero-discounting, while distancing is constrained by threshold-linear running-costs, and the running-cost of perfect-distancing is finite. In this special case, we are able construct strategic equilibria satisfying the Nash best-response condition explicitly by integration. Our constructions are obtained using a new change of variables which simplifies the geometry and analysis.As it turns out, there are no singular solutions, and a time-dependent bang-bang strategy consisting of a wait-and-see phase followed by a lock-down phase is always the unique strategic equilibrium. We also show that in a restricted strategy space the bang-bang Nash equilibrium is an ESS, and that the optimal public policy exactly corresponds with the equilibrium strategy.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12107v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12107v1">Abstract</a>
@@ -431,7 +914,7 @@
     <section class="profile-section" data-profile="Machine Learning &amp; AI">
       <h2>Machine Learning &amp; AI <span class="badge">8</span></h2>
       
-    <div class="paper-card" data-score="10" data-categories="cs.AI" data-paper-id="2603.11691v1">
+    <div class="paper-card" data-score="10" data-quality="28" data-categories="cs.AI" data-paper-id="2603.11691v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11691v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11691v1', this)" title="Mark read">&#10003;</button>
@@ -439,20 +922,52 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11691v1">STAIRS-Former: Spatio-Temporal Attention with Interleaved Recursive Structure Transformer for Offline Multi-task Multi-agent Reinforcement Learning</a>
         <span class="score score-high">10/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(12)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">28/100</span>
+        </span>
       </div>
       <div class="meta">Jiwon Jeon, Myungsik Cho, Youngchul Sung &middot; cs.AI</div>
       
       <div class="reason">Why: Keyword matches: reinforcement learning, reinforcement, architecture, transformer, multi agent</div>
       
-      <button class="abstract-toggle" id="abs-btn-9" onclick="toggleAbstract(9)">Show abstract</button>
-      <div class="abstract-content" id="abs-9">Offline multi-agent reinforcement learning (MARL) with multi-task datasets is challenging due to varying numbers of agents across tasks and the need to generalize to unseen scenarios. Prior works employ transformers with observation tokenization and hierarchical skill learning to address these issues. However, they underutilize the transformer attention mechanism for inter-agent coordination and rely on a single history token, which limits their ability to capture long-horizon temporal dependencies in partially observable MARL settings. In this paper, we propose STAIRS-Former, a transformer architecture augmented with spatial and temporal hierarchies that enables effective attention over critical tokens while capturing long interaction histories. We further introduce token dropout to enhance robustness and generalization across varying agent populations. Extensive experiments on diverse multi-agent benchmarks, including SMAC, SMAC-v2, MPE, and MaMuJoCo, with multi-task datasets demonstrate that STAIRS-Former consistently outperforms prior methods and achieves new state-of-the-art performance.</div>
+      <div class="quality-breakdown" id="qb-12">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--orange)"></div></div>
+          <span class="bar-val">1/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--red)"></div></div>
+          <span class="bar-val">2/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-12" onclick="toggleAbstract(12)">Show abstract</button>
+      <div class="abstract-content" id="abs-12">Offline multi-agent reinforcement learning (MARL) with multi-task datasets is challenging due to varying numbers of agents across tasks and the need to generalize to unseen scenarios. Prior works employ transformers with observation tokenization and hierarchical skill learning to address these issues. However, they underutilize the transformer attention mechanism for inter-agent coordination and rely on a single history token, which limits their ability to capture long-horizon temporal dependencies in partially observable MARL settings. In this paper, we propose STAIRS-Former, a transformer architecture augmented with spatial and temporal hierarchies that enables effective attention over critical tokens while capturing long interaction histories. We further introduce token dropout to enhance robustness and generalization across varying agent populations. Extensive experiments on diverse multi-agent benchmarks, including SMAC, SMAC-v2, MPE, and MaMuJoCo, with multi-task datasets demonstrate that STAIRS-Former consistently outperforms prior methods and achieves new state-of-the-art performance.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11691v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11691v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="9" data-categories="cs.LG, cs.AI" data-paper-id="2603.12244v1">
+    <div class="paper-card" data-score="9" data-quality="29" data-categories="cs.LG, cs.AI" data-paper-id="2603.12244v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12244v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12244v1', this)" title="Mark read">&#10003;</button>
@@ -460,20 +975,52 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12244v1">Separable neural architectures as a primitive for unified predictive and generative intelligence</a>
         <span class="score score-high">9/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(13)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">29/100</span>
+        </span>
       </div>
       <div class="meta">Reza T. Batley, Apurba Sarker, Rajib Mostakim, Andrew Klichine, Sourav Saha &middot; cs.LG, cs.AI</div>
       
       <div class="reason">Why: Keyword matches: reinforcement learning, neural architecture, reinforcement, architectures, architecture</div>
       
-      <button class="abstract-toggle" id="abs-btn-10" onclick="toggleAbstract(10)">Show abstract</button>
-      <div class="abstract-content" id="abs-10">Intelligent systems across physics, language and perception often exhibit factorisable structure, yet are typically modelled by monolithic neural architectures that do not explicitly exploit this structure. The separable neural architecture (SNA) addresses this by formalising a representational class that unifies additive, quadratic and tensor-decomposed neural models. By constraining interaction order and tensor rank, SNAs impose a structural inductive bias that factorises high-dimensional mappings into low-arity components. Separability need not be a property of the system itself: it often emerges in the coordinates or representations through which the system is expressed. Crucially, this coordinate-aware formulation reveals a structural analogy between chaotic spatiotemporal dynamics and linguistic autoregression. By treating continuous physical states as smooth, separable embeddings, SNAs enable distributional modelling of chaotic systems. This approach mitigates the nonphysical drift characteristics of deterministic operators whilst remaining applicable to discrete sequences. The compositional versatility of this approach is demonstrated across four domains: autonomous waypoint navigation via reinforcement learning, inverse generation of multifunctional microstructures, distributional modelling of turbulent flow and neural language modelling. These results establish the separable neural architecture as a domain-agnostic primitive for predictive and generative intelligence, capable of unifying both deterministic and distributional representations.</div>
+      <div class="quality-breakdown" id="qb-13">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-13" onclick="toggleAbstract(13)">Show abstract</button>
+      <div class="abstract-content" id="abs-13">Intelligent systems across physics, language and perception often exhibit factorisable structure, yet are typically modelled by monolithic neural architectures that do not explicitly exploit this structure. The separable neural architecture (SNA) addresses this by formalising a representational class that unifies additive, quadratic and tensor-decomposed neural models. By constraining interaction order and tensor rank, SNAs impose a structural inductive bias that factorises high-dimensional mappings into low-arity components. Separability need not be a property of the system itself: it often emerges in the coordinates or representations through which the system is expressed. Crucially, this coordinate-aware formulation reveals a structural analogy between chaotic spatiotemporal dynamics and linguistic autoregression. By treating continuous physical states as smooth, separable embeddings, SNAs enable distributional modelling of chaotic systems. This approach mitigates the nonphysical drift characteristics of deterministic operators whilst remaining applicable to discrete sequences. The compositional versatility of this approach is demonstrated across four domains: autonomous waypoint navigation via reinforcement learning, inverse generation of multifunctional microstructures, distributional modelling of turbulent flow and neural language modelling. These results establish the separable neural architecture as a domain-agnostic primitive for predictive and generative intelligence, capable of unifying both deterministic and distributional representations.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12244v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12244v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="9" data-categories="cs.DC, cs.LG, cs.MA" data-paper-id="2603.12031v1">
+    <div class="paper-card" data-score="9" data-quality="27" data-categories="cs.DC, cs.LG, cs.MA" data-paper-id="2603.12031v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12031v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12031v1', this)" title="Mark read">&#10003;</button>
@@ -481,20 +1028,52 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12031v1">AGMARL-DKS: An Adaptive Graph-Enhanced Multi-Agent Reinforcement Learning for Dynamic Kubernetes Scheduling</a>
         <span class="score score-high">9/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(14)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">27/100</span>
+        </span>
       </div>
       <div class="meta">Hamed Hamzeh &middot; cs.DC, cs.LG, cs.MA</div>
       
       <div class="reason">Why: Keyword matches: reinforcement learning, reinforcement, learning for, graph neural, multi agent</div>
       
-      <button class="abstract-toggle" id="abs-btn-11" onclick="toggleAbstract(11)">Show abstract</button>
-      <div class="abstract-content" id="abs-11">State-of-the-art cloud-native applications require intelligent schedulers that can effectively balance system stability, resource utilisation, and associated costs. While Kubernetes provides feasibility-based placement by default, recent research efforts have explored the use of reinforcement learning (RL) for more intelligent scheduling decisions. However, current RL-based schedulers have three major limitations. First, most of these schedulers use monolithic centralised agents, which are non-scalable for large heterogeneous clusters. Second, the ones that use multi-objective reward functions assume simple, static, linear combinations of the objectives. Third, no previous work has produced a stress-aware scheduler that can react adaptively to dynamic conditions. To address these gaps in current research, we propose the Adaptive Graph-enhanced Multi-Agent Reinforcement Learning Dynamic Kubernetes Scheduler (AGMARL-DKS). AGMARL-DKS addresses these gaps by introducing three major innovations. First, we construct a scalable solution by treating the scheduling challenge as a cooperative multi-agent problem, where every cluster node operates as an agent, employing centralised training methods before decentralised execution. Second, to be context-aware and yet decentralised, we use a Graph Neural Network (GNN) to build a state representation of the global cluster context at each agent. This represents an improvement over methods that rely solely on local observations. Finally, to make trade-offs between these objectives, we use a stress-aware lexicographical ordering policy instead of a simple, static linear weighting of these objectives. The evaluations in Google Kubernetes Engine (GKE) reveal that AGMARL-DKS significantly outperforms the default scheduler in terms of fault tolerance, utilisation, and cost, especially in scheduling batch and mission-critical workloads.</div>
+      <div class="quality-breakdown" id="qb-14">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--red)"></div></div>
+          <span class="bar-val">2/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-14" onclick="toggleAbstract(14)">Show abstract</button>
+      <div class="abstract-content" id="abs-14">State-of-the-art cloud-native applications require intelligent schedulers that can effectively balance system stability, resource utilisation, and associated costs. While Kubernetes provides feasibility-based placement by default, recent research efforts have explored the use of reinforcement learning (RL) for more intelligent scheduling decisions. However, current RL-based schedulers have three major limitations. First, most of these schedulers use monolithic centralised agents, which are non-scalable for large heterogeneous clusters. Second, the ones that use multi-objective reward functions assume simple, static, linear combinations of the objectives. Third, no previous work has produced a stress-aware scheduler that can react adaptively to dynamic conditions. To address these gaps in current research, we propose the Adaptive Graph-enhanced Multi-Agent Reinforcement Learning Dynamic Kubernetes Scheduler (AGMARL-DKS). AGMARL-DKS addresses these gaps by introducing three major innovations. First, we construct a scalable solution by treating the scheduling challenge as a cooperative multi-agent problem, where every cluster node operates as an agent, employing centralised training methods before decentralised execution. Second, to be context-aware and yet decentralised, we use a Graph Neural Network (GNN) to build a state representation of the global cluster context at each agent. This represents an improvement over methods that rely solely on local observations. Finally, to make trade-offs between these objectives, we use a stress-aware lexicographical ordering policy instead of a simple, static linear weighting of these objectives. The evaluations in Google Kubernetes Engine (GKE) reveal that AGMARL-DKS significantly outperforms the default scheduler in terms of fault tolerance, utilisation, and cost, especially in scheduling batch and mission-critical workloads.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12031v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12031v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="8" data-categories="cs.LG, cs.AI" data-paper-id="2603.12091v1">
+    <div class="paper-card" data-score="8" data-quality="22" data-categories="cs.LG, cs.AI" data-paper-id="2603.12091v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12091v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12091v1', this)" title="Mark read">&#10003;</button>
@@ -502,20 +1081,52 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12091v1">Resource-Efficient Iterative LLM-Based NAS with Feedback Memory</a>
         <span class="score score-high">8/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(15)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">22/100</span>
+        </span>
       </div>
       <div class="meta">Xiaojie Gu, Dmitry Ignatov, Radu Timofte &middot; cs.LG, cs.AI</div>
       
-      <div class="reason">Why: Keyword matches: neural architecture, architecture search, language models, large language, architectures</div>
+      <div class="reason">Why: Keyword matches: architecture search, neural architecture, language models, large language, architectures</div>
       
-      <button class="abstract-toggle" id="abs-btn-12" onclick="toggleAbstract(12)">Show abstract</button>
-      <div class="abstract-content" id="abs-12">Neural Architecture Search (NAS) automates network design, but conventional methods demand substantial computational resources. We propose a closed-loop pipeline leveraging large language models (LLMs) to iteratively generate, evaluate, and refine convolutional neural network architectures for image classification on a single consumer-grade GPU without LLM fine-tuning. Central to our approach is a historical feedback memory inspired by Markov chains: a sliding window of $K{=}5$ recent improvement attempts keeps context size constant while providing sufficient signal for iterative learning. Unlike prior LLM optimizers that discard failure trajectories, each history entry is a structured diagnostic triple -- recording the identified problem, suggested modification, and resulting outcome -- treating code execution failures as first-class learning signals. A dual-LLM specialization reduces per-call cognitive load: a Code Generator produces executable PyTorch architectures while a Prompt Improver handles diagnostic reasoning. Since both the LLM and architecture training share limited VRAM, the search implicitly favors compact, hardware-efficient models suited to edge deployment. We evaluate three frozen instruction-tuned LLMs (${\leq}7$B parameters) across up to 2000 iterations in an unconstrained open code space, using one-epoch proxy accuracy on CIFAR-10, CIFAR-100, and ImageNette as a fast ranking signal. On CIFAR-10, DeepSeek-Coder-6.7B improves from 28.2% to 69.2%, Qwen2.5-7B from 50.0% to 71.5%, and GLM-5 from 43.2% to 62.0%. A full 2000-iteration search completes in ${\approx}18$ GPU hours on a single RTX~4090, establishing a low-budget, reproducible, and hardware-aware paradigm for LLM-driven NAS without cloud infrastructure.</div>
+      <div class="quality-breakdown" id="qb-15">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:64%;background:var(--accent)"></div></div>
+          <span class="bar-val">16/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--orange)"></div></div>
+          <span class="bar-val">3/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-15" onclick="toggleAbstract(15)">Show abstract</button>
+      <div class="abstract-content" id="abs-15">Neural Architecture Search (NAS) automates network design, but conventional methods demand substantial computational resources. We propose a closed-loop pipeline leveraging large language models (LLMs) to iteratively generate, evaluate, and refine convolutional neural network architectures for image classification on a single consumer-grade GPU without LLM fine-tuning. Central to our approach is a historical feedback memory inspired by Markov chains: a sliding window of $K{=}5$ recent improvement attempts keeps context size constant while providing sufficient signal for iterative learning. Unlike prior LLM optimizers that discard failure trajectories, each history entry is a structured diagnostic triple -- recording the identified problem, suggested modification, and resulting outcome -- treating code execution failures as first-class learning signals. A dual-LLM specialization reduces per-call cognitive load: a Code Generator produces executable PyTorch architectures while a Prompt Improver handles diagnostic reasoning. Since both the LLM and architecture training share limited VRAM, the search implicitly favors compact, hardware-efficient models suited to edge deployment. We evaluate three frozen instruction-tuned LLMs (${\leq}7$B parameters) across up to 2000 iterations in an unconstrained open code space, using one-epoch proxy accuracy on CIFAR-10, CIFAR-100, and ImageNette as a fast ranking signal. On CIFAR-10, DeepSeek-Coder-6.7B improves from 28.2% to 69.2%, Qwen2.5-7B from 50.0% to 71.5%, and GLM-5 from 43.2% to 62.0%. A full 2000-iteration search completes in ${\approx}18$ GPU hours on a single RTX~4090, establishing a low-budget, reproducible, and hardware-aware paradigm for LLM-driven NAS without cloud infrastructure.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12091v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12091v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="7" data-categories="cs.LG, cs.AI, math.ST, stat.ML" data-paper-id="2603.12060v1">
+    <div class="paper-card" data-score="7" data-quality="23" data-categories="cs.LG, cs.AI, math.ST, stat.ML" data-paper-id="2603.12060v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12060v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12060v1', this)" title="Mark read">&#10003;</button>
@@ -523,20 +1134,52 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12060v1">Chemical Reaction Networks Learn Better than Spiking Neural Networks</a>
         <span class="score score-mid">7/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(16)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">23/100</span>
+        </span>
       </div>
       <div class="meta">Sophie Jaffard, Ivo F. Sbalzarini &middot; cs.LG, cs.AI, math.ST, stat.ML</div>
       
       <div class="reason">Why: Keyword matches: machine learning, neural networks, efficient, networks, learning</div>
       
-      <button class="abstract-toggle" id="abs-btn-13" onclick="toggleAbstract(13)">Show abstract</button>
-      <div class="abstract-content" id="abs-13">We mathematically prove that chemical reaction networks without hidden layers can solve tasks for which spiking neural networks require hidden layers. Our proof uses the deterministic mass-action kinetics formulation of chemical reaction networks. Specifically, we prove that a certain reaction network without hidden layers can learn a classification task previously proved to be achievable by a spiking neural network with hidden layers. We provide analytical regret bounds for the global behavior of the network and analyze its asymptotic behavior and Vapnik-Chervonenkis dimension. In a numerical experiment, we confirm the learning capacity of the proposed chemical reaction network for classifying handwritten digits in pixel images, and we show that it solves the task more accurately and efficiently than a spiking neural network with hidden layers. This provides a motivation for machine learning in chemical computers and a mathematical explanation for how biological cells might exhibit more efficient learning behavior within biochemical reaction networks than neuronal networks.</div>
+      <div class="quality-breakdown" id="qb-16">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--accent)"></div></div>
+          <span class="bar-val">12/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:40%;background:#c678dd"></div></div>
+          <span class="bar-val">6/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:33%;background:var(--red)"></div></div>
+          <span class="bar-val">5/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-16" onclick="toggleAbstract(16)">Show abstract</button>
+      <div class="abstract-content" id="abs-16">We mathematically prove that chemical reaction networks without hidden layers can solve tasks for which spiking neural networks require hidden layers. Our proof uses the deterministic mass-action kinetics formulation of chemical reaction networks. Specifically, we prove that a certain reaction network without hidden layers can learn a classification task previously proved to be achievable by a spiking neural network with hidden layers. We provide analytical regret bounds for the global behavior of the network and analyze its asymptotic behavior and Vapnik-Chervonenkis dimension. In a numerical experiment, we confirm the learning capacity of the proposed chemical reaction network for classifying handwritten digits in pixel images, and we show that it solves the task more accurately and efficiently than a spiking neural network with hidden layers. This provides a motivation for machine learning in chemical computers and a mathematical explanation for how biological cells might exhibit more efficient learning behavior within biochemical reaction networks than neuronal networks.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12060v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12060v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="7" data-categories="cs.LG, cs.AI" data-paper-id="2603.12015v1">
+    <div class="paper-card" data-score="7" data-quality="19" data-categories="cs.LG, cs.AI" data-paper-id="2603.12015v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12015v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12015v1', this)" title="Mark read">&#10003;</button>
@@ -544,20 +1187,52 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12015v1">Flowcean - Model Learning for Cyber-Physical Systems</a>
         <span class="score score-mid">7/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(17)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">19/100</span>
+        </span>
       </div>
       <div class="meta">Maximilian Schmidt, Swantje Plambeck, Markus Knitt, Hendrik Rose, Goerschwin Fey et al. &middot; cs.LG, cs.AI</div>
       
       <div class="reason">Why: Keyword matches: machine learning, learning for, architecture, efficient, learning</div>
       
-      <button class="abstract-toggle" id="abs-btn-14" onclick="toggleAbstract(14)">Show abstract</button>
-      <div class="abstract-content" id="abs-14">Effective models of Cyber-Physical Systems (CPS) are crucial for their design and operation. Constructing such models is difficult and time-consuming due to the inherent complexity of CPS. As a result, data-driven model generation using machine learning methods is gaining popularity. In this paper, we present Flowcean, a novel framework designed to automate the generation of models through data-driven learning that focuses on modularity and usability. By offering various learning strategies, data processing methods, and evaluation metrics, our framework provides a comprehensive solution, tailored to CPS scenarios. Flowcean facilitates the integration of diverse learning libraries and tools within a modular and flexible architecture, ensuring adaptability to a wide range of modeling tasks. This streamlines the process of model generation and evaluation, making it more efficient and accessible.</div>
+      <div class="quality-breakdown" id="qb-17">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--accent)"></div></div>
+          <span class="bar-val">12/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-17" onclick="toggleAbstract(17)">Show abstract</button>
+      <div class="abstract-content" id="abs-17">Effective models of Cyber-Physical Systems (CPS) are crucial for their design and operation. Constructing such models is difficult and time-consuming due to the inherent complexity of CPS. As a result, data-driven model generation using machine learning methods is gaining popularity. In this paper, we present Flowcean, a novel framework designed to automate the generation of models through data-driven learning that focuses on modularity and usability. By offering various learning strategies, data processing methods, and evaluation metrics, our framework provides a comprehensive solution, tailored to CPS scenarios. Flowcean facilitates the integration of diverse learning libraries and tools within a modular and flexible architecture, ensuring adaptability to a wide range of modeling tasks. This streamlines the process of model generation and evaluation, making it more efficient and accessible.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12015v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12015v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="7" data-categories="cs.AI" data-paper-id="2603.12096v1">
+    <div class="paper-card" data-score="7" data-quality="16" data-categories="cs.AI" data-paper-id="2603.12096v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12096v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12096v1', this)" title="Mark read">&#10003;</button>
@@ -565,20 +1240,52 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12096v1">A Robust and Efficient Multi-Agent Reinforcement Learning Framework for Traffic Signal Control</a>
         <span class="score score-mid">7/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(18)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">16/100</span>
+        </span>
       </div>
       <div class="meta">Sheng-You Huang, Hsiao-Chuan Chang, Yen-Chi Chen, Ting-Han Wei, I-Hau Yeh et al. &middot; cs.AI</div>
       
       <div class="reason">Why: Keyword matches: reinforcement learning, reinforcement, multi agent, mechanisms, efficient</div>
       
-      <button class="abstract-toggle" id="abs-btn-15" onclick="toggleAbstract(15)">Show abstract</button>
-      <div class="abstract-content" id="abs-15">Reinforcement Learning (RL) in Traffic Signal Control (TSC) faces significant hurdles in real-world deployment due to limited generalization to dynamic traffic flow variations. Existing approaches often overfit static patterns and use action spaces incompatible with driver expectations. This paper proposes a robust Multi-Agent Reinforcement Learning (MARL) framework validated in the Vissim traffic simulator. The framework integrates three mechanisms: (1) Turning Ratio Randomization, a training strategy that exposes agents to dynamic turning probabilities to enhance robustness against unseen scenarios; (2) a stability-oriented Exponential Phase Duration Adjustment action space, which balances responsiveness and precision through cyclical, exponential phase adjustments; and (3) a Neighbor-Based Observation scheme utilizing the MAPPO algorithm with Centralized Training with Decentralized Execution (CTDE). By leveraging centralized updates, this approach approximates the efficacy of global observations while maintaining scalable local communication. Experimental results demonstrate that our framework outperforms standard RL baselines, reducing average waiting time by over 10%. The proposed model exhibits superior generalization in unseen traffic scenarios and maintains high control stability, offering a practical solution for adaptive signal control.</div>
+      <div class="quality-breakdown" id="qb-18">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--accent)"></div></div>
+          <span class="bar-val">12/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-18" onclick="toggleAbstract(18)">Show abstract</button>
+      <div class="abstract-content" id="abs-18">Reinforcement Learning (RL) in Traffic Signal Control (TSC) faces significant hurdles in real-world deployment due to limited generalization to dynamic traffic flow variations. Existing approaches often overfit static patterns and use action spaces incompatible with driver expectations. This paper proposes a robust Multi-Agent Reinforcement Learning (MARL) framework validated in the Vissim traffic simulator. The framework integrates three mechanisms: (1) Turning Ratio Randomization, a training strategy that exposes agents to dynamic turning probabilities to enhance robustness against unseen scenarios; (2) a stability-oriented Exponential Phase Duration Adjustment action space, which balances responsiveness and precision through cyclical, exponential phase adjustments; and (3) a Neighbor-Based Observation scheme utilizing the MAPPO algorithm with Centralized Training with Decentralized Execution (CTDE). By leveraging centralized updates, this approach approximates the efficacy of global observations while maintaining scalable local communication. Experimental results demonstrate that our framework outperforms standard RL baselines, reducing average waiting time by over 10%. The proposed model exhibits superior generalization in unseen traffic scenarios and maintains high control stability, offering a practical solution for adaptive signal control.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12096v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12096v1">Abstract</a>
         
       </div>
     </div>
-    <div class="paper-card" data-score="6" data-categories="stat.ML, cs.LG" data-paper-id="2603.11835v1">
+    <div class="paper-card" data-score="6" data-quality="11" data-categories="stat.ML, cs.LG" data-paper-id="2603.11835v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11835v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11835v1', this)" title="Mark read">&#10003;</button>
@@ -586,13 +1293,45 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11835v1">Hypercomplex Widely Linear Processing: Fundamentals for Quaternion Machine Learning</a>
         <span class="score score-mid">6/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(19)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">11/100</span>
+        </span>
       </div>
       <div class="meta">Sayed Pouria Talebi, Clive Cheong Took &middot; stat.ML, cs.LG</div>
       
       <div class="reason">Why: Keyword matches: machine learning, foundation, learning, machine, science</div>
       
-      <button class="abstract-toggle" id="abs-btn-16" onclick="toggleAbstract(16)">Show abstract</button>
-      <div class="abstract-content" id="abs-16">Numerous attempts have been made to replicate the success of complex-valued algebra in engineering and science to other hypercomplex domains such as quaternions, tessarines, biquaternions, and octonions. Perhaps, none have matched the success of quaternions. The most useful feature of quaternions lies in their ability to model three-dimensional rotations which, in turn, have found various industrial applications such as in aeronautics and computergraphics. Recently, we have witnessed a renaissance of quaternions due to the rise of machine learning. To equip the reader to contribute to this emerging research area, this chapter lays down the foundation for: - augmented statistics for modelling quaternion-valued random processes, - widely linear models to exploit such advanced statistics, - quaternion calculus and algebra for algorithmic derivations, - mean square estimation for practical considerations. For ease of exposure, several examples are offered to facilitate the learning, understanding, and(hopefully) the adoption of this multidimensional domain.</div>
+      <div class="quality-breakdown" id="qb-19">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--accent)"></div></div>
+          <span class="bar-val">8/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange)"></div></div>
+          <span class="bar-val">0/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-19" onclick="toggleAbstract(19)">Show abstract</button>
+      <div class="abstract-content" id="abs-19">Numerous attempts have been made to replicate the success of complex-valued algebra in engineering and science to other hypercomplex domains such as quaternions, tessarines, biquaternions, and octonions. Perhaps, none have matched the success of quaternions. The most useful feature of quaternions lies in their ability to model three-dimensional rotations which, in turn, have found various industrial applications such as in aeronautics and computergraphics. Recently, we have witnessed a renaissance of quaternions due to the rise of machine learning. To equip the reader to contribute to this emerging research area, this chapter lays down the foundation for: - augmented statistics for modelling quaternion-valued random processes, - widely linear models to exploit such advanced statistics, - quaternion calculus and algebra for algorithmic derivations, - mean square estimation for practical considerations. For ease of exposure, several examples are offered to facilitate the learning, understanding, and(hopefully) the adoption of this multidimensional domain.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11835v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11835v1">Abstract</a>
@@ -601,55 +1340,278 @@
     </div>
     </section>
     <section class="profile-section" data-profile="Computer Vision &amp; Multimodal">
-      <h2>Computer Vision &amp; Multimodal <span class="badge">2</span></h2>
+      <h2>Computer Vision &amp; Multimodal <span class="badge">5</span></h2>
       
-    <div class="paper-card" data-score="10" data-categories="cs.CV" data-paper-id="2603.11659v1">
-      <div class="card-actions">
-        <button class="btn-fav" onclick="toggleFav('2603.11659v1', this)" title="Favorite">&#9734;</button>
-        <button class="btn-read" onclick="toggleRead('2603.11659v1', this)" title="Mark read">&#10003;</button>
-      </div>
-      <div class="paper-title">
-        <a href="https://arxiv.org/abs/2603.11659v1">FL-MedSegBench: A Comprehensive Benchmark for Federated Learning on Medical Image Segmentation</a>
-        <span class="score score-high">10/10</span>
-      </div>
-      <div class="meta">Meilu Zhu, Zhiwei Wang, Axiu Mao, Yuxing Li, Xiaohan Xing et al. &middot; cs.CV</div>
-      
-      <div class="reason">Why: Keyword matches: image segmentation, image analysis, medical image, segmentation, analysis</div>
-      
-      <button class="abstract-toggle" id="abs-btn-17" onclick="toggleAbstract(17)">Show abstract</button>
-      <div class="abstract-content" id="abs-17">Federated learning (FL) offers a privacy-preserving paradigm for collaborative medical image analysis without sharing raw data. However, the absence of standardized benchmarks for medical image segmentation hinders fair and comprehensive evaluation of FL methods. To address this gap, we introduce FL-MedSegBench, the first comprehensive benchmark for federated learning on medical image segmentation. Our benchmark encompasses nine segmentation tasks across ten imaging modalities, covering both 2D and 3D formats with realistic clinical heterogeneity. We systematically evaluate eight generic FL (gFL) and five personalized FL (pFL) methods across multiple dimensions: segmentation accuracy, fairness, communication efficiency, convergence behavior, and generalization to unseen domains. Extensive experiments reveal several key insights: (i) pFL methods, particularly those with client-specific batch normalization (\textit{e.g.}, FedBN), consistently outperform generic approaches; (ii) No single method universally dominates, with performance being dataset-dependent; (iii) Communication frequency analysis shows normalization-based personalization methods exhibit remarkable robustness to reduced communication frequency; (iv) Fairness evaluation identifies methods like Ditto and FedRDN that protect underperforming clients; (v) A method&#39;s generalization to unseen domains is strongly tied to its ability to perform well across participating clients. We will release an open-source toolkit to foster reproducible research and accelerate clinically applicable FL solutions, providing empirically grounded guidelines for real-world clinical deployment. The source code is available at https://github.com/meiluzhu/FL-MedSegBench.</div>
-      <div class="links">
-        <a href="https://arxiv.org/pdf/2603.11659v1">PDF</a>
-        <a href="https://arxiv.org/abs/2603.11659v1">Abstract</a>
-        <span class="code-badge">CODE</span> <a href="https://github.com/meiluzhu/FL-MedSegBench">https://github.com/meiluzhu/FL-MedSegBench</a> (2 stars)
-      </div>
-    </div>
-    <div class="paper-card" data-score="6" data-categories="cs.CV" data-paper-id="2603.12265v1">
+    <div class="paper-card" data-score="10" data-quality="33" data-categories="cs.CV" data-paper-id="2603.12265v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.12265v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.12265v1', this)" title="Mark read">&#10003;</button>
       </div>
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.12265v1">OmniStream: Mastering Perception, Reconstruction and Action in Continuous Streams</a>
-        <span class="score score-mid">6/10</span>
+        <span class="score score-high">10/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(20)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">33/100</span>
+        </span>
       </div>
       <div class="meta">Yibin Yan, Jilan Xu, Shangzhe Di, Haoning Wu, Weidi Xie &middot; cs.CV</div>
       
-      <div class="reason">Why: Keyword matches: temporal modeling, vision language, reconstruction, understanding, temporal</div>
+      <div class="reason">Why: Keyword matches: temporal modeling, vision language, reconstruction, understanding, language</div>
       
-      <button class="abstract-toggle" id="abs-btn-18" onclick="toggleAbstract(18)">Show abstract</button>
-      <div class="abstract-content" id="abs-18">Modern visual agents require representations that are general, causal, and physically structured to operate in real-time streaming environments. However, current vision foundation models remain fragmented, specializing narrowly in image semantic perception, offline temporal modeling, or spatial geometry. This paper introduces OmniStream, a unified streaming visual backbone that effectively perceives, reconstructs, and acts from diverse visual inputs. By incorporating causal spatiotemporal attention and 3D rotary positional embeddings (3D-RoPE), our model supports efficient, frame-by-frame online processing of video streams via a persistent KV-cache. We pre-train OmniStream using a synergistic multi-task framework coupling static and temporal representation learning, streaming geometric reconstruction, and vision-language alignment on 29 datasets. Extensive evaluations show that, even with a strictly frozen backbone, OmniStream achieves consistently competitive performance with specialized experts across image and video probing, streaming geometric reconstruction, complex video and spatial reasoning, as well as robotic manipulation (unseen at training). Rather than pursuing benchmark-specific dominance, our work demonstrates the viability of training a single, versatile vision backbone that generalizes across semantic, spatial, and temporal reasoning, i.e., a more meaningful step toward general-purpose visual understanding for interactive and embodied agents.</div>
+      <div class="quality-breakdown" id="qb-20">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--orange)"></div></div>
+          <span class="bar-val">5/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-20" onclick="toggleAbstract(20)">Show abstract</button>
+      <div class="abstract-content" id="abs-20">Modern visual agents require representations that are general, causal, and physically structured to operate in real-time streaming environments. However, current vision foundation models remain fragmented, specializing narrowly in image semantic perception, offline temporal modeling, or spatial geometry. This paper introduces OmniStream, a unified streaming visual backbone that effectively perceives, reconstructs, and acts from diverse visual inputs. By incorporating causal spatiotemporal attention and 3D rotary positional embeddings (3D-RoPE), our model supports efficient, frame-by-frame online processing of video streams via a persistent KV-cache. We pre-train OmniStream using a synergistic multi-task framework coupling static and temporal representation learning, streaming geometric reconstruction, and vision-language alignment on 29 datasets. Extensive evaluations show that, even with a strictly frozen backbone, OmniStream achieves consistently competitive performance with specialized experts across image and video probing, streaming geometric reconstruction, complex video and spatial reasoning, as well as robotic manipulation (unseen at training). Rather than pursuing benchmark-specific dominance, our work demonstrates the viability of training a single, versatile vision backbone that generalizes across semantic, spatial, and temporal reasoning, i.e., a more meaningful step toward general-purpose visual understanding for interactive and embodied agents.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.12265v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.12265v1">Abstract</a>
         <span class="code-badge">CODE</span> <a href="https://go2heart.github.io/omnistream">https://go2heart.github.io/omnistream</a>
       </div>
     </div>
+    <div class="paper-card" data-score="7" data-quality="32" data-categories="cs.CV" data-paper-id="2603.12262v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12262v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12262v1', this)" title="Mark read">&#10003;</button>
+      </div>
+      <div class="paper-title">
+        <a href="https://arxiv.org/abs/2603.12262v1">Video Streaming Thinking: VideoLLMs Can Watch and Think Simultaneously</a>
+        <span class="score score-mid">7/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(21)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">32/100</span>
+        </span>
+      </div>
+      <div class="meta">Yiran Guan, Liang Yin, Dingkang Liang, Jianzhong Ju, Zhenbo Luo et al. &middot; cs.CV</div>
+      
+      <div class="reason">Why: Keyword matches: video understanding, language models, understanding, language, models</div>
+      
+      <div class="quality-breakdown" id="qb-21">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--accent)"></div></div>
+          <span class="bar-val">12/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--green)"></div></div>
+          <span class="bar-val">3/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--orange)"></div></div>
+          <span class="bar-val">10/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-21" onclick="toggleAbstract(21)">Show abstract</button>
+      <div class="abstract-content" id="abs-21">Online Video Large Language Models (VideoLLMs) play a critical role in supporting responsive, real-time interaction. Existing methods focus on streaming perception, lacking a synchronized logical reasoning stream. However, directly applying test-time scaling methods incurs unacceptable response latency. To address this trade-off, we propose Video Streaming Thinking (VST), a novel paradigm for streaming video understanding. It supports a thinking while watching mechanism, which activates reasoning over incoming video clips during streaming. This design improves timely comprehension and coherent cognition while preserving real-time responsiveness by amortizing LLM reasoning latency over video playback. Furthermore, we introduce a comprehensive post-training pipeline that integrates VST-SFT, which structurally adapts the offline VideoLLM to causal streaming reasoning, and VST-RL, which provides end-to-end improvement through self-exploration in a multi-turn video interaction environment. Additionally, we devise an automated training-data synthesis pipeline that uses video knowledge graphs to generate high-quality streaming QA pairs, with an entity-relation grounded streaming Chain-of-Thought to enforce multi-evidence reasoning and sustained attention to the video stream. Extensive evaluations show that VST-7B performs strongly on online benchmarks, e.g. 79.5% on StreamingBench and 59.3% on OVO-Bench. Meanwhile, VST remains competitive on offline long-form or reasoning benchmarks. Compared with Video-R1, VST responds 15.7 times faster and achieves +5.4% improvement on VideoHolmes, demonstrating higher efficiency and strong generalization across diverse video understanding tasks. Code, data, and models will be released at https://github.com/1ranGuan/VST.</div>
+      <div class="links">
+        <a href="https://arxiv.org/pdf/2603.12262v1">PDF</a>
+        <a href="https://arxiv.org/abs/2603.12262v1">Abstract</a>
+        <span class="code-badge">CODE</span> <a href="https://github.com/1ranGuan/VST">https://github.com/1ranGuan/VST</a> (27 stars)
+      </div>
+    </div>
+    <div class="paper-card" data-score="7" data-quality="24" data-categories="cs.CV" data-paper-id="2603.12254v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12254v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12254v1', this)" title="Mark read">&#10003;</button>
+      </div>
+      <div class="paper-title">
+        <a href="https://arxiv.org/abs/2603.12254v1">Attend Before Attention: Efficient and Scalable Video Understanding via Autoregressive Gazing</a>
+        <span class="score score-mid">7/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(22)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">24/100</span>
+        </span>
+      </div>
+      <div class="meta">Baifeng Shi, Stephanie Fu, Long Lian, Hanrong Ye, David Eigen et al. &middot; cs.CV</div>
+      
+      <div class="reason">Why: Keyword matches: video understanding, language models, understanding, language, learning</div>
+      
+      <div class="quality-breakdown" id="qb-22">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--accent)"></div></div>
+          <span class="bar-val">12/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--orange)"></div></div>
+          <span class="bar-val">5/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-22" onclick="toggleAbstract(22)">Show abstract</button>
+      <div class="abstract-content" id="abs-22">Multi-modal large language models (MLLMs) have advanced general-purpose video understanding but struggle with long, high-resolution videos -- they process every pixel equally in their vision transformers (ViTs) or LLMs despite significant spatiotemporal redundancy. We introduce AutoGaze, a lightweight module that removes redundant patches before processed by a ViT or an MLLM. Trained with next-token prediction and reinforcement learning, AutoGaze autoregressively selects a minimal set of multi-scale patches that can reconstruct the video within a user-specified error threshold, eliminating redundancy while preserving information. Empirically, AutoGaze reduces visual tokens by 4x-100x and accelerates ViTs and MLLMs by up to 19x, enabling scaling MLLMs to 1K-frame 4K-resolution videos and achieving superior results on video benchmarks (e.g., 67.0% on VideoMME). Furthermore, we introduce HLVid: the first high-resolution, long-form video QA benchmark with 5-minute 4K-resolution videos, where an MLLM scaled with AutoGaze improves over the baseline by 10.1% and outperforms the previous best MLLM by 4.5%. Project page: https://autogaze.github.io/.</div>
+      <div class="links">
+        <a href="https://arxiv.org/pdf/2603.12254v1">PDF</a>
+        <a href="https://arxiv.org/abs/2603.12254v1">Abstract</a>
+        <span class="code-badge">CODE</span> <a href="https://autogaze.github.io/">https://autogaze.github.io/</a>
+      </div>
+    </div>
+    <div class="paper-card" data-score="6" data-quality="15" data-categories="cs.CV" data-paper-id="2603.12208v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12208v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12208v1', this)" title="Mark read">&#10003;</button>
+      </div>
+      <div class="paper-title">
+        <a href="https://arxiv.org/abs/2603.12208v1">ForensicZip: More Tokens are Better but Not Necessary in Forensic Vision-Language Models</a>
+        <span class="score score-mid">6/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(23)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">15/100</span>
+        </span>
+      </div>
+      <div class="meta">Yingxin Lai, Zitong Yu, Jun Wang, Linlin Shen, Yong Xu et al. &middot; cs.CV</div>
+      
+      <div class="reason">Why: Keyword matches: language models, vision language, multimodal, detection, language</div>
+      
+      <div class="quality-breakdown" id="qb-23">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--accent)"></div></div>
+          <span class="bar-val">8/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--orange)"></div></div>
+          <span class="bar-val">1/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:#c678dd"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-23" onclick="toggleAbstract(23)">Show abstract</button>
+      <div class="abstract-content" id="abs-23">Multimodal Large Language Models (MLLMs) enable interpretable multimedia forensics by generating textual rationales for forgery detection. However, processing dense visual sequences incurs high computational costs, particularly for high-resolution images and videos. Visual token pruning is a practical acceleration strategy, yet existing methods are largely semantic-driven, retaining salient objects while discarding background regions where manipulation traces such as high-frequency anomalies and temporal jitters often reside. To address this issue, we introduce ForensicZip, a training-free framework that reformulates token compression from a forgery-driven perspective. ForensicZip models temporal token evolution as a Birth-Death Optimal Transport problem with a slack dummy node, quantifying physical discontinuities indicating transient generative artifacts. The forensic scoring further integrates transport-based novelty with high-frequency priors to separate forensic evidence from semantic content under large-ratio compression. Experiments on deepfake and AIGC benchmarks show that at 10\% token retention, ForensicZip achieves $2.97\times$ speedup and over 90\% FLOPs reduction while maintaining state-of-the-art detection performance.</div>
+      <div class="links">
+        <a href="https://arxiv.org/pdf/2603.12208v1">PDF</a>
+        <a href="https://arxiv.org/abs/2603.12208v1">Abstract</a>
+        
+      </div>
+    </div>
+    <div class="paper-card" data-score="6" data-quality="13" data-categories="cs.CV" data-paper-id="2603.12108v1">
+      <div class="card-actions">
+        <button class="btn-fav" onclick="toggleFav('2603.12108v1', this)" title="Favorite">&#9734;</button>
+        <button class="btn-read" onclick="toggleRead('2603.12108v1', this)" title="Mark read">&#10003;</button>
+      </div>
+      <div class="paper-title">
+        <a href="https://arxiv.org/abs/2603.12108v1">EvoTok: A Unified Image Tokenizer via Residual Latent Evolution for Visual Understanding and Generation</a>
+        <span class="score score-mid">6/10</span>
+        <span class="quality-score">
+          <span class="grade grade-D" onclick="toggleBreakdown(24)" style="cursor:pointer" title="Click for breakdown">D</span>
+          <span class="quality-num">13/100</span>
+        </span>
+      </div>
+      <div class="meta">Yan Li, Ning Liao, Xiangyu Zhao, Shaofeng Zhang, Xiaoxing Wang et al. &middot; cs.CV</div>
+      
+      <div class="reason">Why: Keyword matches: language models, reconstruction, understanding, multimodal, language</div>
+      
+      <div class="quality-breakdown" id="qb-24">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--accent)"></div></div>
+          <span class="bar-val">8/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:5%;background:var(--orange)"></div></div>
+          <span class="bar-val">1/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:#c678dd"></div></div>
+          <span class="bar-val">0/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--red)"></div></div>
+          <span class="bar-val">4/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-24" onclick="toggleAbstract(24)">Show abstract</button>
+      <div class="abstract-content" id="abs-24">The development of unified multimodal large language models (MLLMs) is fundamentally challenged by the granularity gap between visual understanding and generation: understanding requires high-level semantic abstractions, while image generation demands fine-grained pixel-level representations. Existing approaches usually enforce the two supervision on the same set of representation or decouple these two supervision on separate feature spaces, leading to interference and inconsistency, respectively. In this work, we propose EvoTok, a unified image tokenizer that reconciles these requirements through a residual evolution process within a shared latent space. Instead of maintaining separate token spaces for pixels and semantics, EvoTok encodes an image into a cascaded sequence of residual tokens via residual vector quantization. This residual sequence forms an evolution trajectory where earlier stages capture low-level details and deeper stages progressively transition toward high-level semantic representations. Despite being trained on a relatively modest dataset of 13M images, far smaller than the billion-scale datasets used by many previous unified tokenizers, EvoTok achieves a strong reconstruction quality of 0.43 rFID on ImageNet-1K at 256x256 resolution. When integrated with a large language model, EvoTok shows promising performance across 7 out of 9 visual understanding benchmarks, and remarkable results on image generation benchmarks such as GenEval and GenAI-Bench. These results demonstrate that modeling visual representations as an evolving trajectory provides an effective and principled solution for unifying visual understanding and generation.</div>
+      <div class="links">
+        <a href="https://arxiv.org/pdf/2603.12108v1">PDF</a>
+        <a href="https://arxiv.org/abs/2603.12108v1">Abstract</a>
+        
+      </div>
+    </div>
     </section>
     <section class="profile-section" data-profile="NLP &amp; Language Models">
-      <h2>NLP &amp; Language Models <span class="badge">2</span></h2>
+      <h2>NLP &amp; Language Models <span class="badge">1</span></h2>
       
-    <div class="paper-card" data-score="10" data-categories="cs.CL" data-paper-id="2603.11772v1">
+    <div class="paper-card" data-score="10" data-quality="45" data-categories="cs.CL" data-paper-id="2603.11772v1">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('2603.11772v1', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('2603.11772v1', this)" title="Mark read">&#10003;</button>
@@ -657,38 +1619,49 @@
       <div class="paper-title">
         <a href="https://arxiv.org/abs/2603.11772v1">Legal-DC: Benchmarking Retrieval-Augmented Generation for Legal Documents</a>
         <span class="score score-high">10/10</span>
+        <span class="quality-score">
+          <span class="grade grade-C" onclick="toggleBreakdown(25)" style="cursor:pointer" title="Click for breakdown">C</span>
+          <span class="quality-num">45/100</span>
+        </span>
       </div>
       <div class="meta">Yaocong Li, Qiang Lan, Leihan Zhang, Le Zhang &middot; cs.CL</div>
       
       <div class="reason">Why: Keyword matches: augmented generation, retrieval augmented, language models, generation rag, large language</div>
       
-      <button class="abstract-toggle" id="abs-btn-19" onclick="toggleAbstract(19)">Show abstract</button>
-      <div class="abstract-content" id="abs-19">Retrieval-Augmented Generation (RAG) has emerged as a promising technology for legal document consultation, yet its application in Chinese legal scenarios faces two key limitations: existing benchmarks lack specialized support for joint retriever-generator evaluation, and mainstream RAG systems often fail to accommodate the structured nature of legal provisions. To address these gaps, this study advances two core contributions: First, we constructed the Legal-DC benchmark dataset, comprising 480 legal documents (covering areas such as market regulation and contract management) and 2,475 refined question-answer pairs, each annotated with clause-level references, filling the gap for specialized evaluation resources in Chinese legal RAG. Second, we propose the LegRAG framework, which integrates legal adaptive indexing (clause-boundary segmentation) with a dual-path self-reflection mechanism to ensure clause integrity while enhancing answer accuracy. Third, we introduce automated evaluation methods for large language models to meet the high-reliability demands of legal retrieval scenarios. LegRAG outperforms existing state-of-the-art methods by 1.3% to 5.6% across key evaluation metrics. This research provides a specialized benchmark, practical framework, and empirical insights to advance the development of Chinese legal RAG systems. Our code and data are available at https://github.com/legal-dc/Legal-DC.</div>
+      <div class="quality-breakdown" id="qb-25">
+        <div class="breakdown-bar">
+          <span class="bar-label">Relevance</span>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="bar-val">25/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Quantitative</span>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--green)"></div></div>
+          <span class="bar-val">0/25</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Code/Repro</span>
+          <div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--orange)"></div></div>
+          <span class="bar-val">11/20</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Novelty</span>
+          <div class="bar-track"><div class="bar-fill" style="width:40%;background:#c678dd"></div></div>
+          <span class="bar-val">6/15</span>
+        </div>
+        <div class="breakdown-bar">
+          <span class="bar-label">Rigor</span>
+          <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
+          <span class="bar-val">3/15</span>
+        </div>
+      </div>
+      
+      <button class="abstract-toggle" id="abs-btn-25" onclick="toggleAbstract(25)">Show abstract</button>
+      <div class="abstract-content" id="abs-25">Retrieval-Augmented Generation (RAG) has emerged as a promising technology for legal document consultation, yet its application in Chinese legal scenarios faces two key limitations: existing benchmarks lack specialized support for joint retriever-generator evaluation, and mainstream RAG systems often fail to accommodate the structured nature of legal provisions. To address these gaps, this study advances two core contributions: First, we constructed the Legal-DC benchmark dataset, comprising 480 legal documents (covering areas such as market regulation and contract management) and 2,475 refined question-answer pairs, each annotated with clause-level references, filling the gap for specialized evaluation resources in Chinese legal RAG. Second, we propose the LegRAG framework, which integrates legal adaptive indexing (clause-boundary segmentation) with a dual-path self-reflection mechanism to ensure clause integrity while enhancing answer accuracy. Third, we introduce automated evaluation methods for large language models to meet the high-reliability demands of legal retrieval scenarios. LegRAG outperforms existing state-of-the-art methods by 1.3% to 5.6% across key evaluation metrics. This research provides a specialized benchmark, practical framework, and empirical insights to advance the development of Chinese legal RAG systems. Our code and data are available at https://github.com/legal-dc/Legal-DC.</div>
       <div class="links">
         <a href="https://arxiv.org/pdf/2603.11772v1">PDF</a>
         <a href="https://arxiv.org/abs/2603.11772v1">Abstract</a>
         <span class="code-badge">CODE</span> <a href="https://github.com/legal-dc/Legal-DC">https://github.com/legal-dc/Legal-DC</a> (0 stars)
-      </div>
-    </div>
-    <div class="paper-card" data-score="8" data-categories="cs.CL" data-paper-id="2603.11650v1">
-      <div class="card-actions">
-        <button class="btn-fav" onclick="toggleFav('2603.11650v1', this)" title="Favorite">&#9734;</button>
-        <button class="btn-read" onclick="toggleRead('2603.11650v1', this)" title="Mark read">&#10003;</button>
-      </div>
-      <div class="paper-title">
-        <a href="https://arxiv.org/abs/2603.11650v1">QChunker: Learning Question-Aware Text Chunking for Domain RAG via Multi-Agent Debate</a>
-        <span class="score score-high">8/10</span>
-      </div>
-      <div class="meta">Jihao Zhao, Daixuan Li, Pengfei Li, Shuaishuai Zu, Biao Qin et al. &middot; cs.CL</div>
-      
-      <div class="reason">Why: Keyword matches: augmented generation, retrieval augmented, language models, generation rag, information</div>
-      
-      <button class="abstract-toggle" id="abs-btn-20" onclick="toggleAbstract(20)">Show abstract</button>
-      <div class="abstract-content" id="abs-20">The effectiveness upper bound of retrieval-augmented generation (RAG) is fundamentally constrained by the semantic integrity and information granularity of text chunks in its knowledge base. To address these challenges, this paper proposes QChunker, which restructures the RAG paradigm from retrieval-augmentation to understanding-retrieval-augmentation. Firstly, QChunker models the text chunking as a composite task of text segmentation and knowledge completion to ensure the logical coherence and integrity of text chunks. Drawing inspiration from Hal Gregersen&#39;s &quot;Questions Are the Answer&quot; theory, we design a multi-agent debate framework comprising four specialized components: a question outline generator, text segmenter, integrity reviewer, and knowledge completer. This framework operates on the principle that questions serve as catalysts for profound insights. Through this pipeline, we successfully construct a high-quality dataset of 45K entries and transfer this capability to small language models. Additionally, to handle long evaluation chains and low efficiency in existing chunking evaluation methods, which overly rely on downstream QA tasks, we introduce a novel direct evaluation metric, ChunkScore. Both theoretical and experimental validations demonstrate that ChunkScore can directly and efficiently discriminate the quality of text chunks. Furthermore, during the text segmentation phase, we utilize document outlines for multi-path sampling to generate multiple candidate chunks and select the optimal solution employing ChunkScore. Extensive experimental results across four heterogeneous domains exhibit that QChunker effectively resolves aforementioned issues by providing RAG with more logically coherent and information-rich text chunks.</div>
-      <div class="links">
-        <a href="https://arxiv.org/pdf/2603.11650v1">PDF</a>
-        <a href="https://arxiv.org/abs/2603.11650v1">Abstract</a>
-        
       </div>
     </div>
     </section>
@@ -762,6 +1735,12 @@
       favOnly = !favOnly;
       document.getElementById('favBtn').classList.toggle('active', favOnly);
       applyFilters();
+    }
+
+    // Toggle quality breakdown
+    function toggleBreakdown(idx) {
+      const el = document.getElementById('qb-' + idx);
+      if (el) el.classList.toggle('show');
     }
 
     // Toggle abstract

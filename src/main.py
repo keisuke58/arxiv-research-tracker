@@ -15,6 +15,7 @@ from keyword_scorer import score_by_keywords
 from embedding_scorer import score_by_embedding
 from summarize import summarize_papers
 from detect_code import detect_code_links
+from quality_scorer import apply_quality_scores
 from generate_output import save_outputs
 from notify import send_notifications
 
@@ -159,8 +160,22 @@ def run_pipeline(
         print("[4/5] Code detection disabled, skipping")
         print()
 
-    # Step 5: Generate output
-    print("[5/5] Generating output...")
+    # Step 5: Quality scoring (100-point composite)
+    print("[5/6] Computing quality scores...")
+    for name, papers in papers_by_profile.items():
+        relevant = [p for p in papers if p.get("relevance_score", 0) >= threshold]
+        if relevant:
+            apply_quality_scores(relevant)
+            grades = {}
+            for p in relevant:
+                g = p.get("quality_grade", "?")
+                grades[g] = grades.get(g, 0) + 1
+            grade_str = " ".join(f"{g}:{n}" for g, n in sorted(grades.items()))
+            print(f"  [{name}] {len(relevant)} papers scored — {grade_str}")
+    print()
+
+    # Step 6: Generate output
+    print("[6/6] Generating output...")
     created = save_outputs(
         papers_by_profile,
         output_cfg,

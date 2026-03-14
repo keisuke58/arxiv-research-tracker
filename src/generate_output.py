@@ -309,6 +309,40 @@ def generate_html(
     .score-high {{ background: var(--green); }}
     .score-mid {{ background: var(--orange); }}
     .score-low {{ background: var(--text-muted); }}
+
+    /* Quality score (100pt) */
+    .quality-score {{
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-left: 6px; font-size: 12px;
+    }}
+    .grade {{
+      display: inline-block; padding: 1px 6px; border-radius: 3px;
+      font-weight: 800; font-size: 11px; color: #fff;
+    }}
+    .grade-S {{ background: linear-gradient(135deg, #ff6b6b, #ffd93d); }}
+    .grade-A {{ background: var(--green); }}
+    .grade-B {{ background: var(--accent); }}
+    .grade-C {{ background: var(--text-muted); }}
+    .grade-D {{ background: #555; }}
+    .quality-num {{ color: var(--text-muted); font-size: 11px; }}
+    .quality-breakdown {{
+      display: none; margin-top: 6px; padding: 8px 10px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+      font-size: 11px; color: var(--text-muted);
+    }}
+    .quality-breakdown.show {{ display: block; }}
+    .breakdown-bar {{
+      display: flex; align-items: center; gap: 6px; margin: 2px 0;
+    }}
+    .breakdown-bar .bar-label {{ width: 90px; text-align: right; }}
+    .breakdown-bar .bar-track {{
+      flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden;
+    }}
+    .breakdown-bar .bar-fill {{
+      height: 100%; border-radius: 3px; transition: width 0.3s;
+    }}
+    .breakdown-bar .bar-val {{ width: 30px; font-size: 10px; }}
+
     .meta {{ font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }}
 
     /* Abstract */
@@ -451,6 +485,12 @@ def generate_html(
       applyFilters();
     }}
 
+    // Toggle quality breakdown
+    function toggleBreakdown(idx) {{
+      const el = document.getElementById('qb-' + idx);
+      if (el) el.classList.toggle('show');
+    }}
+
     // Toggle abstract
     function toggleAbstract(idx) {{
       const el = document.getElementById('abs-' + idx);
@@ -553,6 +593,37 @@ def _paper_card_html(p: dict, idx: int = 0) -> str:
     paper_id = _esc(p.get("arxiv_id", f"paper-{idx}"))
     cats = ", ".join(p.get("categories", []))
 
+    # Quality score
+    q_score = p.get("quality_score", 0)
+    q_grade = p.get("quality_grade", "D")
+    q_breakdown = p.get("quality_breakdown", {})
+
+    # Breakdown bars
+    breakdown_items = [
+        ("Relevance", q_breakdown.get("relevance", 0), 25),
+        ("Quantitative", q_breakdown.get("quantitative", 0), 25),
+        ("Code/Repro", q_breakdown.get("code_repro", 0), 20),
+        ("Novelty", q_breakdown.get("novelty", 0), 15),
+        ("Rigor", q_breakdown.get("rigor", 0), 15),
+    ]
+    bar_colors = ["var(--accent)", "var(--green)", "var(--orange)", "#c678dd", "var(--red)"]
+    breakdown_html = ""
+    if q_breakdown:
+        bars = ""
+        for i, (label, val, max_val) in enumerate(breakdown_items):
+            pct = int(val / max_val * 100) if max_val > 0 else 0
+            color = bar_colors[i % len(bar_colors)]
+            bars += f"""
+        <div class="breakdown-bar">
+          <span class="bar-label">{label}</span>
+          <div class="bar-track"><div class="bar-fill" style="width:{pct}%;background:{color}"></div></div>
+          <span class="bar-val">{val}/{max_val}</span>
+        </div>"""
+        breakdown_html = f"""
+      <div class="quality-breakdown" id="qb-{idx}">{bars}
+      </div>"""
+
+    # Authors
     authors = p.get("authors", [])
     if len(authors) > 5:
         author_str = ", ".join(_esc(a) for a in authors[:5]) + f" et al."
@@ -563,8 +634,6 @@ def _paper_card_html(p: dict, idx: int = 0) -> str:
     abstract = p.get("abstract", "")
     abstract_html = ""
     if abstract:
-        # Truncate display to first 300 chars
-        abstract_short = abstract[:300] + ("..." if len(abstract) > 300 else "")
         abstract_html = f"""
       <button class="abstract-toggle" id="abs-btn-{idx}" onclick="toggleAbstract({idx})">Show abstract</button>
       <div class="abstract-content" id="abs-{idx}">{_esc(abstract)}</div>"""
@@ -591,7 +660,7 @@ def _paper_card_html(p: dict, idx: int = 0) -> str:
     abs_url = p.get("abs_url", "")
 
     return f"""
-    <div class="paper-card" data-score="{score}" data-categories="{_esc(cats)}" data-paper-id="{paper_id}">
+    <div class="paper-card" data-score="{score}" data-quality="{q_score}" data-categories="{_esc(cats)}" data-paper-id="{paper_id}">
       <div class="card-actions">
         <button class="btn-fav" onclick="toggleFav('{paper_id}', this)" title="Favorite">&#9734;</button>
         <button class="btn-read" onclick="toggleRead('{paper_id}', this)" title="Mark read">&#10003;</button>
@@ -599,10 +668,15 @@ def _paper_card_html(p: dict, idx: int = 0) -> str:
       <div class="paper-title">
         <a href="{_esc(abs_url)}">{_esc(p['title'])}</a>
         <span class="score {score_class}">{score}/10</span>
+        <span class="quality-score">
+          <span class="grade grade-{q_grade}" onclick="toggleBreakdown({idx})" style="cursor:pointer" title="Click for breakdown">{q_grade}</span>
+          <span class="quality-num">{q_score}/100</span>
+        </span>
       </div>
       <div class="meta">{author_str} &middot; {_esc(cats)}</div>
       {tldr_html}
       {reason_html}
+      {breakdown_html}
       {abstract_html}
       <div class="links">
         <a href="{_esc(pdf_url)}">PDF</a>
