@@ -11,7 +11,11 @@ on:
         required: false
         default: "1"
       dry_run:
-        description: "Dry run (fetch only, no LLM)"
+        description: "Dry run (fetch only, no scoring)"
+        type: boolean
+        default: false
+      use_llm:
+        description: "Use LLM for scoring/summaries (default: keyword-based, free)"
         type: boolean
         default: false
 
@@ -45,11 +49,14 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           cd src
+          ARGS="--config ../config.yaml --skip-notify"
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            python main.py --config ../config.yaml --dry-run
-          else
-            python main.py --config ../config.yaml
+            ARGS="$ARGS --dry-run"
           fi
+          if [ "${{ github.event.inputs.use_llm }}" = "true" ]; then
+            ARGS="$ARGS --llm"
+          fi
+          python main.py $ARGS
 
       - name: Commit and push results
         run: |

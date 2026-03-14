@@ -9,6 +9,7 @@ import yaml
 
 from fetch_papers import fetch_all_papers, save_raw_papers
 from score_relevance import score_papers
+from keyword_scorer import score_by_keywords
 from summarize import summarize_papers
 from detect_code import detect_code_links
 from generate_output import generate_html, save_outputs
@@ -20,7 +21,7 @@ def load_config(config_path: str = "config.yaml") -> dict:
         return yaml.safe_load(f)
 
 
-def run_pipeline(config: dict, skip_notify: bool = False) -> None:
+def run_pipeline(config: dict, skip_notify: bool = False, use_llm: bool = False) -> None:
     """Run the full paper collection and analysis pipeline."""
     global_cfg = config.get("global", {})
     llm_cfg = config.get("llm", {})
@@ -41,7 +42,8 @@ def run_pipeline(config: dict, skip_notify: bool = False) -> None:
         print("No enabled profiles found in config.")
         sys.exit(1)
 
-    print(f"=== arxiv-research-tracker ===")
+    mode = "LLM" if use_llm else "keyword"
+    print(f"=== arxiv-research-tracker ({mode} mode) ===")
     print(f"Profiles: {len(enabled_profiles)} enabled")
     print()
 
@@ -66,24 +68,32 @@ def run_pipeline(config: dict, skip_notify: bool = False) -> None:
         if not interest:
             print(f"  [{name}] No interest defined, skipping scoring")
             continue
-        print(f"  [{name}] Scoring {len(papers)} papers...")
-        papers_by_profile[name] = score_papers(
-            papers, interest, llm_cfg, batch_size=batch_size, threshold=threshold
-        )
+        print(f"  [{name}] Scoring {len(papers)} papers ({mode})...")
+        if use_llm:
+            papers_by_profile[name] = score_papers(
+                papers, interest, llm_cfg, batch_size=batch_size, threshold=threshold
+            )
+        else:
+            papers_by_profile[name] = score_by_keywords(
+                papers, interest, threshold=threshold
+            )
     print()
 
-    # Step 3: Summarize top papers
-    print("[3/5] Generating summaries...")
-    for profile in enabled_profiles:
-        name = profile["name"]
-        papers = papers_by_profile.get(name, [])
-        # Only summarize papers above threshold
-        to_summarize = [p for p in papers if p.get("relevance_score", 0) >= threshold]
-        if not to_summarize:
-            continue
-        print(f"  [{name}] Summarizing {len(to_summarize)} papers...")
-        summarize_papers(to_summarize, llm_cfg, language=language)
-    print()
+    # Step 3: Summarize top papers (LLM only)
+    if use_llm:
+        print("[3/5] Generating summaries...")
+        for profile in enabled_profiles:
+            name = profile["name"]
+            papers = papers_by_profile.get(name, [])
+            to_summarize = [p for p in papers if p.get("relevance_score", 0) >= threshold]
+            if not to_summarize:
+                continue
+            print(f"  [{name}] Summarizing {len(to_summarize)} papers...")
+            summarize_papers(to_summarize, llm_cfg, language=language)
+        print()
+    else:
+        print("[3/5] Summaries skipped (keyword mode, use --llm for AI summaries)")
+        print()
 
     # Step 4: Detect code
     if code_cfg.get("enabled", True):
@@ -144,14 +154,17 @@ def main():
     )
     parser.add_argument(
         "--dry-run", action="store_true",
-        help="Fetch only, no LLM calls (useful for testing)",
+        help="Fetch only, no scoring (useful for testing)",
+    )
+    parser.add_argument(
+        "--llm", action="store_true",
+        help="Use LLM for scoring and summaries (default: keyword-based, no API needed)",
     )
     args = parser.parse_args()
 
     config = load_config(args.config)
 
     if args.dry_run:
-        # Only fetch and save raw papers
         profiles = [p for p in config.get("profiles", []) if p.get("enabled", True)]
         print("=== DRY RUN (fetch only) ===")
         papers = fetch_all_papers(
@@ -162,7 +175,7 @@ def main():
         save_raw_papers(papers)
         print("=== Done (dry run) ===")
     else:
-        run_pipeline(config, skip_notify=args.skip_notify)
+        run_pipeline(config, skip_notify=args.skip_notify, use_llm=args.llm)
 
 
 if __name__ == "__main__":

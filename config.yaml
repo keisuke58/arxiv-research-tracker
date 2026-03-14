@@ -21,11 +21,10 @@ global:
 
 # LLM settings
 llm:
-  # Provider: "openai", "anthropic", "deepseek", or any OpenAI-compatible endpoint
-  provider: "deepseek"
-  model: "deepseek-chat"
-  # For OpenAI-compatible endpoints, set base_url
-  # base_url: "https://api.deepseek.com/v1"
+  # Provider: "openai", "anthropic", "deepseek", "gemini", or any OpenAI-compatible endpoint
+  provider: "gemini"
+  model: "gemini-2.0-flash"
+  base_url: "https://generativelanguage.googleapis.com/v1beta/openai"
   # Temperature for scoring (lower = more deterministic)
   scoring_temperature: 0.3
   # Temperature for summarization (slightly creative)
