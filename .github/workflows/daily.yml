@@ -1,0 +1,75 @@
+name: Daily arXiv Digest
+
+on:
+  schedule:
+    # Run daily at 06:00 UTC (08:00 CET)
+    - cron: "0 6 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      days_back:
+        description: "Number of days back to fetch"
+        required: false
+        default: "1"
+      dry_run:
+        description: "Dry run (fetch only, no LLM)"
+        type: boolean
+        default: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          cd src
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            python main.py --config ../config.yaml --dry-run
+          else
+            python main.py --config ../config.yaml
+          fi
+
+      - name: Commit and push results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/ docs/
+
+          if git diff --staged --quiet; then
+            echo "No new papers to commit"
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "digest: ${DATE} arXiv papers"
+            git push
+          fi
+
+      - name: Deploy to GitHub Pages
+        if: github.event.inputs.dry_run != 'true'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          keep_files: true

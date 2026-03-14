@@ -1,0 +1,249 @@
+# ============================================================
+# arxiv-research-tracker configuration
+# ============================================================
+# This file defines what papers to track, how to score them,
+# and how to deliver results.
+#
+# Multiple "profiles" are supported — each profile can target
+# different research areas with its own categories and interests.
+# ============================================================
+
+# Global settings
+global:
+  # How many days back to fetch (1 = today only)
+  days_back: 1
+  # Maximum papers per category before LLM filtering
+  max_papers_per_category: 200
+  # Output language for summaries
+  language: "English"
+  # Timezone for scheduling
+  timezone: "Europe/Berlin"
+
+# LLM settings
+llm:
+  # Provider: "openai", "anthropic", "deepseek", or any OpenAI-compatible endpoint
+  provider: "deepseek"
+  model: "deepseek-chat"
+  # For OpenAI-compatible endpoints, set base_url
+  # base_url: "https://api.deepseek.com/v1"
+  # Temperature for scoring (lower = more deterministic)
+  scoring_temperature: 0.3
+  # Temperature for summarization (slightly creative)
+  summary_temperature: 0.5
+  # Max concurrent API calls
+  max_concurrent: 4
+  # Papers per scoring batch (sent together to LLM)
+  scoring_batch_size: 8
+
+# Relevance scoring
+scoring:
+  # Papers with score >= threshold are included in output
+  threshold: 6
+  # Scale: 1-10
+  max_score: 10
+
+# Research profiles — define as many as you need
+# Set enabled: true/false to toggle each profile
+profiles:
+  # ── Computational Mechanics ──────────────────────────────
+  - name: "Computational Mechanics & UQ"
+    enabled: true
+    categories:
+      - "cs.CE"            # Computational Engineering
+      - "physics.comp-ph"  # Computational Physics
+      - "stat.CO"          # Computation (Statistics)
+      - "stat.ME"          # Methodology
+    interest: |
+      Finite element methods, boundary element methods, spectral methods.
+      Bayesian inference: TMCMC, SMC, HMC, NUTS, variational inference.
+      Uncertainty quantification, stochastic FEM, polynomial chaos.
+      Inverse problems in solid/structural mechanics.
+      Surrogate models: DeepONet, Fourier neural operator, neural operators.
+      Physics-informed neural networks (PINNs), differentiable simulation.
+      Multiscale methods, homogenization, computational material science.
+
+  # ── Numerical Methods & VEM ──────────────────────────────
+  - name: "Numerical Methods & VEM"
+    enabled: true
+    categories:
+      - "math.NA"          # Numerical Analysis
+      - "cs.NA"            # Numerical Analysis (CS mirror)
+      - "cs.CE"            # Computational Engineering
+    interest: |
+      Virtual Element Methods (VEM), mimetic finite differences.
+      Polyhedral mesh methods, arbitrary polygon/polyhedra discretization.
+      Meshfree and meshless methods (SPH, RKPM, MLS).
+      Isogeometric analysis, spline-based FEM.
+      Adaptive mesh refinement, error estimators.
+      Mixed methods, stabilization techniques.
+
+  # ── Biological & Biofilm Modeling ────────────────────────
+  - name: "Biofilm & Microbial Modeling"
+    enabled: true
+    categories:
+      - "q-bio.QM"        # Quantitative Methods
+      - "q-bio.PE"        # Populations and Evolution
+      - "q-bio.CB"        # Cell Behavior
+      - "q-bio.SC"        # Subcellular Processes
+      - "physics.bio-ph"  # Biological Physics
+    interest: |
+      Biofilm mechanics: growth, adhesion, viscoelasticity, detachment.
+      Microbial community modeling: replicator dynamics, Lotka-Volterra, game theory.
+      Oral microbiome: dental plaque, caries, periodontal disease.
+      Multiscale coupling of biological and mechanical models.
+      Metabolic modeling, flux balance analysis, genome-scale models.
+      Systems biology, gene regulatory networks.
+
+  # ── Machine Learning & AI ────────────────────────────────
+  - name: "Machine Learning & AI"
+    enabled: true
+    categories:
+      - "cs.LG"           # Machine Learning
+      - "cs.AI"           # Artificial Intelligence
+      - "stat.ML"         # Machine Learning (Statistics)
+    interest: |
+      Foundation models, large language models, pretraining.
+      Graph neural networks (GNN), geometric deep learning.
+      Generative models: diffusion, flow matching, VAE.
+      Reinforcement learning, multi-agent systems.
+      Scientific machine learning, AI for science.
+      Neural architecture search, efficient training.
+      Transformer architectures, attention mechanisms.
+
+  # ── Computer Vision & Multimodal ─────────────────────────
+  - name: "Computer Vision & Multimodal"
+    enabled: true
+    categories:
+      - "cs.CV"           # Computer Vision
+      - "cs.MM"           # Multimedia
+    interest: |
+      Image segmentation, object detection, 3D vision.
+      Multimodal learning, vision-language models.
+      Video understanding, temporal modeling.
+      Medical image analysis.
+      NeRF, 3D reconstruction, point clouds.
+
+  # ── NLP & Language Models ────────────────────────────────
+  - name: "NLP & Language Models"
+    enabled: true
+    categories:
+      - "cs.CL"           # Computation and Language
+    interest: |
+      Large language models: GPT, Claude, Llama, Gemma.
+      Retrieval-augmented generation (RAG).
+      Code generation, program synthesis.
+      Reasoning, chain-of-thought, agents.
+      Multilingual NLP, low-resource languages.
+      Summarization, information extraction.
+
+  # ── Robotics & Control ───────────────────────────────────
+  - name: "Robotics & Control"
+    enabled: false
+    categories:
+      - "cs.RO"           # Robotics
+      - "cs.SY"           # Systems and Control
+      - "eess.SY"         # Systems and Control (EESS)
+    interest: |
+      Robot learning, sim-to-real transfer.
+      Motion planning, manipulation.
+      Model predictive control, optimal control.
+      Autonomous driving, SLAM.
+
+  # ── Quantum Computing ───────────────────────────────────
+  - name: "Quantum Computing"
+    enabled: false
+    categories:
+      - "quant-ph"        # Quantum Physics
+      - "cs.ET"           # Emerging Technologies
+    interest: |
+      Variational quantum algorithms (VQE, QAOA).
+      Quantum error correction, fault tolerance.
+      Quantum machine learning, quantum kernels.
+      Quantum simulation of many-body systems.
+
+  # ── Materials Science & Chemistry ────────────────────────
+  - name: "Materials Science & Chemistry"
+    enabled: false
+    categories:
+      - "cond-mat.mtrl-sci"  # Materials Science
+      - "physics.chem-ph"    # Chemical Physics
+    interest: |
+      Computational materials discovery, high-throughput screening.
+      Molecular dynamics, density functional theory (DFT).
+      Machine learning interatomic potentials.
+      Polymer mechanics, soft matter.
+
+  # ── Mathematics (Pure & Applied) ─────────────────────────
+  - name: "Applied Mathematics"
+    enabled: false
+    categories:
+      - "math.AP"          # Analysis of PDEs
+      - "math.OC"          # Optimization and Control
+      - "math.DS"          # Dynamical Systems
+      - "math.PR"          # Probability
+    interest: |
+      PDE analysis: well-posedness, regularity, blow-up.
+      Optimization: convex, non-convex, stochastic, distributed.
+      Dynamical systems: bifurcation, chaos, stability.
+      Stochastic processes, random matrices.
+
+  # ── Astrophysics & Cosmology ─────────────────────────────
+  - name: "Astrophysics"
+    enabled: false
+    categories:
+      - "astro-ph.CO"     # Cosmology
+      - "astro-ph.GA"     # Galaxies
+      - "astro-ph.HE"     # High Energy
+    interest: |
+      Cosmological simulations, N-body methods.
+      Galaxy formation, dark matter, dark energy.
+      Gravitational waves, compact objects.
+
+  # ── Economics & Finance ──────────────────────────────────
+  - name: "Quantitative Finance"
+    enabled: false
+    categories:
+      - "q-fin.ST"        # Statistical Finance
+      - "q-fin.CP"        # Computational Finance
+      - "q-fin.PM"        # Portfolio Management
+      - "econ.GN"         # General Economics
+    interest: |
+      Algorithmic trading, market microstructure.
+      Risk management, portfolio optimization.
+      Econometrics, causal inference.
+      Cryptocurrency, DeFi.
+
+# Output settings
+output:
+  # Generate Markdown archive (data/YYYY/MM-DD.md)
+  markdown: true
+  # Generate HTML for GitHub Pages (docs/index.html)
+  html: true
+  # Include papers with no score (unscored, just listed)
+  include_unscored: false
+
+# Notification settings
+notification:
+  email:
+    enabled: false
+    # Uses SMTP or SendGrid — set credentials as env vars:
+    #   SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
+    #   or SENDGRID_API_KEY
+    method: "smtp"  # "smtp" or "sendgrid"
+    to: ""
+    from: ""
+    subject_prefix: "[arXiv Digest]"
+
+  slack:
+    enabled: false
+    # Set SLACK_WEBHOOK_URL as env var
+    # Only top-N papers are sent to Slack
+    top_n: 10
+
+# Code detection settings
+code_detection:
+  enabled: true
+  # Check GitHub API for stars and last update
+  check_github_metadata: true
+  # Minimum stars to highlight
+  star_threshold: 10
